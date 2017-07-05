@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 
 /**
  * Created by Wanju Kim on 2017-07-05.
+ * MainActivity comment
  */
 
 public class MainActivity extends Activity {
