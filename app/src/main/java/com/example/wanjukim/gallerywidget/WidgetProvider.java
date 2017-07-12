@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.net.Uri;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 
 import java.util.Locale;
@@ -35,10 +36,10 @@ public class WidgetProvider extends AppWidgetProvider{
         Calendar mCalendar=Calendar.getInstance();
         SimpleDateFormat mFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
 
-        RemoteViews updateViews=new RemoteViews(context.getPackageName(),R.layout.wiget_layout);
-        updateViews.setTextViewText(R.id.textView2,mFormat.format((mCalendar.getTime())));
+        RemoteViews updateViews=new RemoteViews(context.getPackageName(),R.layout.widget_layout);
+        updateViews.setTextViewText(R.id.textView1,mFormat.format((mCalendar.getTime())));
 
-        Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.acmicpc.net/step"));
+        Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.acmicpc.net/step"));//configuration으로 바꾸기
         PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,0);
         updateViews.setOnClickPendingIntent(R.id.mLayout,pendingIntent);
 
@@ -58,5 +59,11 @@ public class WidgetProvider extends AppWidgetProvider{
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
+    }
+
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+
     }
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Gallery Widget</string>
+    <string name="user_setting">User_setting</string>
 </resources>
