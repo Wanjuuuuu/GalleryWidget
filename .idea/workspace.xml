@@ -10,7 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ef084cd2-afd5-4696-b9d6-5c37432b3717" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/wanjukim/gallerywidget/ConfigWidgetActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/wanjukim/gallerywidget/ConfigWidgetActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/wanjukim/gallerywidget/GalleryMenuActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/wanjukim/gallerywidget/GalleryMenuActivity.java" />
     </list>
     <ignored path="GalleryWidget.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -122,11 +122,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GalleryMenuActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GalleryMenuActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/wanjukim/gallerywidget/GalleryMenuActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="17" column="78" selection-start-line="17" selection-start-column="78" selection-end-line="17" selection-end-column="78" />
+            <state relative-caret-position="418">
+              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TextMenuActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/wanjukim/gallerywidget/TextMenuActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="330">
+              <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1996,6 +2008,7 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/widget_config_text.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/wanjukim/gallerywidget/WidgetProvider.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/wanjukim/gallerywidget/ConfigWidgetActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/wanjukim/gallerywidget/TextMenuActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/wanjukim/gallerywidget/GalleryMenuActivity.java" />
       </list>
     </option>
@@ -2879,8 +2892,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/wanjukim/gallerywidget/GalleryMenuActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="17" column="78" selection-start-line="17" selection-start-column="78" selection-end-line="17" selection-end-column="78" />
+        <state relative-caret-position="418">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/wanjukim/gallerywidget/TextMenuActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

@@ -8,12 +8,12 @@ import android.support.annotation.Nullable;
  * Created by Wanju Kim on 2017-07-13.
  */
 
-public class GalleryMenuActivity extends Activity {
+public class TextMenuActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.widget_config_gallery);
+        setContentView(R.layout.widget_config_text);
     }
 
-    /*functions needed : connection with gallery and choose the photo, saving button and change the photo, back button*/
+    /*functions needed : text written by user, saving button and change the text, back button*/
 }
