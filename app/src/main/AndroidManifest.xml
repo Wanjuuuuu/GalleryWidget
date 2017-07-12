@@ -22,5 +22,10 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_provider"/>
         </receiver>
+        <activity android:name=".ConfigWidgetActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.aciton.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
     </application>
 </manifest>
