@@ -61,6 +61,7 @@ public class WidgetProvider extends AppWidgetProvider{
         super.onDeleted(context, appWidgetIds);
     }
 
+    //???
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
