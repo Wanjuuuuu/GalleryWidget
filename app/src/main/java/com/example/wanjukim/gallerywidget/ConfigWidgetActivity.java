@@ -15,6 +15,7 @@ import android.widget.RemoteViews;
 
 public class ConfigWidgetActivity extends Activity {
     int mAppWidgetId;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +32,7 @@ public class ConfigWidgetActivity extends Activity {
 
         /*perform App Widget configuration*/
 
-      
+
 
         /*update the App Widget when configuration is complete*/
 
