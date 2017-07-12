@@ -37,7 +37,7 @@ public class WidgetProvider extends AppWidgetProvider{
         SimpleDateFormat mFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
 
         RemoteViews updateViews=new RemoteViews(context.getPackageName(),R.layout.widget_layout);
-        updateViews.setTextViewText(R.id.textView2,mFormat.format((mCalendar.getTime())));
+        updateViews.setTextViewText(R.id.widget_textView2,mFormat.format((mCalendar.getTime())));
 
         Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.acmicpc.net/step"));//configuration으로 바꾸기
         PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,0);
