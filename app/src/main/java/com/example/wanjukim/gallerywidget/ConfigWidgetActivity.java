@@ -14,7 +14,10 @@ import android.widget.RemoteViews;
  */
 
 public class ConfigWidgetActivity extends Activity {
-    int mAppWidgetId;
+    private int mAppWidgetId;
+    private AppWidgetManager appWidgetManager;
+    private RemoteViews remoteViews;
+    private Button buttonToGallery;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -23,22 +26,32 @@ public class ConfigWidgetActivity extends Activity {
 
         /*get the App Widget ID from the Intent*/
 
-        Intent intent=getIntent();
+        final Intent intent=getIntent();
         Bundle extras=intent.getExtras(); // retrieve data
         if(extras!=null){
             mAppWidgetId=extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
+        appWidgetManager=AppWidgetManager.getInstance(this);
+        remoteViews=new RemoteViews(this.getPackageName(),R.layout.widget_layout);
+
         /*perform App Widget configuration*/
 
+        buttonToGallery=(Button)findViewById(R.id.config_option_button1); // Gallery option
+        buttonToGallery.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent_gallery=new Intent(getApplicationContext(),GalleryMenuActivity.class);
+                startActivity(intent_gallery);
+                getOption(v);
+            }
+        });// move to another activity
+    }
 
-
+    public void getOption(View view){
         /*update the App Widget when configuration is complete*/
 
-        AppWidgetManager appWidgetManager=AppWidgetManager.getInstance(this);
-        RemoteViews views=new RemoteViews(this.getPackageName(),R.layout.widget_layout);
-        appWidgetManager.updateAppWidget(mAppWidgetId,views);
+        appWidgetManager.updateAppWidget(mAppWidgetId,remoteViews);
 
         /*create the return intent, set it with the Activity result and finish the acitivity*/
 

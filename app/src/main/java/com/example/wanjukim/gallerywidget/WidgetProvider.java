@@ -1,5 +1,6 @@
 package com.example.wanjukim.gallerywidget;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -36,12 +37,16 @@ public class WidgetProvider extends AppWidgetProvider{
         Calendar mCalendar=Calendar.getInstance();
         SimpleDateFormat mFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
 
+        /*need to have the function to update time periodically*/
+
         RemoteViews updateViews=new RemoteViews(context.getPackageName(),R.layout.widget_layout);
         updateViews.setTextViewText(R.id.widget_textView2,mFormat.format((mCalendar.getTime())));
 
-        Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.acmicpc.net/step"));//configuration으로 바꾸기
+        Intent intent=new Intent(context,ConfigWidgetActivity.class); // has been changed to configuration activity but don't know whether it works or not
         PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,0);
         updateViews.setOnClickPendingIntent(R.id.mLayout,pendingIntent);
+
+        /*need to have Screen transition and then update the changes*/
 
         appWidgetManager.updateAppWidget(appWidgetId,updateViews);
     }
@@ -61,7 +66,7 @@ public class WidgetProvider extends AppWidgetProvider{
         super.onDeleted(context, appWidgetIds);
     }
 
-    //???
+    //not yet
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
