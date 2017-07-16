@@ -43,9 +43,9 @@ public class ConfigWidgetActivity extends Activity {
             public void onClick(View v){
                 Intent intent_gallery=new Intent(getApplicationContext(),GalleryMenuActivity.class);
                 startActivity(intent_gallery);
-                getOption(v);
+                //getOption(v);
             }
-        });// move to another activity
+        });// move to another activity .. doesn't work
     }
 
     public void getOption(View view){

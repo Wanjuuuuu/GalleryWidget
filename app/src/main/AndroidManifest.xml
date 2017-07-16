@@ -27,5 +27,6 @@
                 <action android:name="android.appwidget.aciton.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
+        <activity android:name=".GalleryMenuActivity"/>
     </application>
 </manifest>
