@@ -18,6 +18,7 @@ public class ConfigWidgetActivity extends Activity {
     private AppWidgetManager appWidgetManager;
     private RemoteViews remoteViews;
     private Button buttonToGallery;
+    private Button buttonToTextMenu;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,12 +41,22 @@ public class ConfigWidgetActivity extends Activity {
 
         buttonToGallery=(Button)findViewById(R.id.config_option_button1); // Gallery option
         buttonToGallery.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+            @Override
+            public void onClick(View v) {
                 Intent intent_gallery=new Intent(getApplicationContext(),GalleryMenuActivity.class);
                 startActivity(intent_gallery);
                 //getOption(v);
             }
-        });// move to another activity .. doesn't work
+        });
+
+        buttonToTextMenu=(Button)findViewById(R.id.config_option_button2); // Text menu option
+        buttonToTextMenu.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent_textMenu=new Intent(getApplicationContext(),TextMenuActivity.class);
+                startActivity(intent_textMenu);
+            }
+        });
     }
 
     public void getOption(View view){

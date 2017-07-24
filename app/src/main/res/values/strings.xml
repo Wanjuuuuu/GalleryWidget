@@ -5,4 +5,6 @@
     <string name="config_option_text">Write your own words</string>
     <string name="config_option_button_gallery">go to gallery</string>
     <string name="config_option_button_changetext">change text</string>
+    <string name="back">Back</string>
+    <string name="save">Save</string>
 </resources>
