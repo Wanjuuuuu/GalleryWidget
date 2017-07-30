@@ -3,6 +3,7 @@
     package="com.example.wanjukim.gallerywidget">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".AndroidApplication"
