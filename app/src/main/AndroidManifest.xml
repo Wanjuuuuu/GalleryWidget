@@ -30,17 +30,17 @@
                 android:resource="@xml/widget_provider"/>
         </receiver>
 
-        <activity android:name=".ConfigWidgetActivity">
+        <activity android:name=".activities.ConfigWidgetActivity">
             <intent-filter>
                 <action android:name="android.appwidget.aciton.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".GalleryMenuActivity"
+        <activity android:name=".activities.GalleryMenuActivity"
             android:label="@string/config_option_button_gallery">
         </activity>
 
-        <activity android:name=".TextMenuActivity"
+        <activity android:name=".activities.TextMenuActivity"
             android:label="@string/config_option_button_changetext">
         </activity>
 

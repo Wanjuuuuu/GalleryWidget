@@ -1,5 +1,6 @@
-package com.example.wanjukim.gallerywidget;
+package com.example.wanjukim.gallerywidget.activities;
 
+import com.example.wanjukim.gallerywidget.R;
 import com.example.wanjukim.gallerywidget.recyclerview.*;
 
 import android.Manifest;
@@ -11,6 +12,8 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.List;
@@ -45,6 +48,22 @@ public class GalleryMenuActivity extends AppCompatActivity implements PhotoAdapt
 
         String[] permissions={Manifest.permission.READ_EXTERNAL_STORAGE};
         ActivityCompat.requestPermissions(this,permissions,STORAGE_PERMISSION_REQUEST);
+
+        Button button_save=(Button)findViewById(R.id.gallery_save_button);
+        button_save.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                /* not yet */
+            }
+        });
+
+        Button button_back=(Button)findViewById(R.id.gallery_back_button);
+        button_back.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
