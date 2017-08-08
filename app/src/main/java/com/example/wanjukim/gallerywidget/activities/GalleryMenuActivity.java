@@ -1,9 +1,13 @@
 package com.example.wanjukim.gallerywidget.activities;
 
 import com.example.wanjukim.gallerywidget.R;
+import com.example.wanjukim.gallerywidget.WidgetProvider;
 import com.example.wanjukim.gallerywidget.recyclerview.*;
 
 import android.Manifest;
+import android.appwidget.AppWidgetManager;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +29,9 @@ import java.util.List;
 public class GalleryMenuActivity extends AppCompatActivity implements PhotoAdapter.PhotoClickListener {
     private RecyclerView photoListView;
     private PhotoAdapter adapter;
+    private SharedPreferences setting;
+    private SharedPreferences.Editor editor;
+    private String path=null;
 
     private final int STORAGE_PERMISSION_REQUEST=2017;
 
@@ -53,7 +60,19 @@ public class GalleryMenuActivity extends AppCompatActivity implements PhotoAdapt
         button_save.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                /* not yet */
+                if(path==null){
+                    Toast.makeText(getApplicationContext(),"You haven't chosen a photo yet",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                setting=getSharedPreferences("setting",0);
+                editor=setting.edit();
+
+                editor.remove("photo");
+                editor.putString("photo",path);
+                editor.commit();
+
+                setResult(RESULT_OK);
+                finish();
             }
         });
 
@@ -94,6 +113,7 @@ public class GalleryMenuActivity extends AppCompatActivity implements PhotoAdapt
 
     @Override
     public void onClickPhoto(Photo photo) {
+        path=photo.getPath();
         Toast.makeText(this,photo.getPath(),Toast.LENGTH_SHORT).show();
     }
 }

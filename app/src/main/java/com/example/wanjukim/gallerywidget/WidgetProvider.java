@@ -6,9 +6,13 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
 
+import com.bumptech.glide.Glide;
 import com.example.wanjukim.gallerywidget.activities.ConfigWidgetActivity;
 
 import java.util.Locale;
@@ -23,27 +27,33 @@ public class WidgetProvider extends AppWidgetProvider{
         super.onReceive(context, intent);
     }
 
+    //broadcast receiver에서 onupdate가 제대로 불리는지  확인해보기
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         for(int i=0;i<appWidgetIds.length;i++) {
             int appWidgetId=appWidgetIds[i];
 
+            RemoteViews updateViews=new RemoteViews(context.getPackageName(),R.layout.widget_layout);
+            /* configwidgetAcitivity 클릭하면 뛰도록 */
             Intent intent=new Intent(context,ConfigWidgetActivity.class);
             PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,0);
-
-            RemoteViews updateViews=new RemoteViews(context.getPackageName(),R.layout.widget_layout);
             updateViews.setOnClickPendingIntent(R.id.mLayout,pendingIntent);
 
-            /*need to have Screen transition and then update the changes*/
+
+            // TODO: sharedPreference 에서 path 가져오기
+            // Path 로 Uri 만들기
+
+//            updateViews.setImageViewUri(R.id.widget_imageView, new);
+//            SharedPreferences setting=context.getSharedPreferences("setting",0);
+//            String content=setting.getString("text",null);
+//            Log.d("Dedubbing_","sharedPreference:" +content);
+//            updateViews.setTextViewText(R.id.widget_textView,content);
 
             appWidgetManager.updateAppWidget(appWidgetId,updateViews);
         }
     }
 
-    public void updateAppWidget(int appWidgetId,RemoteViews views){
-
-    }
 
     @Override
     public void onEnabled(Context context) {
@@ -64,6 +74,5 @@ public class WidgetProvider extends AppWidgetProvider{
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
-
     }
 }
