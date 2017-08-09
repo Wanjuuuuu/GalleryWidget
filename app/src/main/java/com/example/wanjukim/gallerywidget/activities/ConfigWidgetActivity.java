@@ -25,9 +25,9 @@ import com.example.wanjukim.gallerywidget.WidgetProvider;
  */
 
 public class ConfigWidgetActivity extends Activity {
-    private int mAppWidgetId;
-    private AppWidgetManager appWidgetManager;
-    private RemoteViews remoteViews;
+    private static int mAppWidgetId;
+    private static boolean gallery_Condition; // not edited
+//    private static boolean text_condition=false; // not edited
     private Button buttonToGallery;
     private Button buttonToTextMenu;
     private Button button;
@@ -46,25 +46,21 @@ public class ConfigWidgetActivity extends Activity {
         Bundle extras=intent.getExtras(); // retrieve data
 
         if(extras!=null){
-            mAppWidgetId=extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    AppWidgetManager.INVALID_APPWIDGET_ID);
+            mAppWidgetId=extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
             Log.d("Debugging_ ","ID: " +mAppWidgetId);
         }
-        else
-            Log.d("Debugging_ ","EXTRAS=NULL CASE: ID: " +mAppWidgetId);
-
-        appWidgetManager=AppWidgetManager.getInstance(this);
-        remoteViews=new RemoteViews(this.getPackageName(),R.layout.widget_layout);
 
         /* perform App Widget configuration */
+
+        gallery_Condition=false;
 
         buttonToGallery=(Button)findViewById(R.id.config_option_button1); // Gallery option
         buttonToGallery.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent intent_gallery=new Intent(getApplicationContext(),GalleryMenuActivity.class);
-                startActivity(intent_gallery);
-//                startActivityForResult(intent_gallery,GALLERY_ACTIVITY);
+//                startActivity(intent_gallery);
+                startActivityForResult(intent_gallery,GALLERY_ACTIVITY);
             }
         });
 
@@ -84,45 +80,37 @@ public class ConfigWidgetActivity extends Activity {
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                /*update the App Widget when configuration is complete*/
 
-                Context context=ConfigWidgetActivity.this;//
-//                Context context=getApplicationContext();
-                WidgetProvider.updateWidget(context,AppWidgetManager.getInstance(context),mAppWidgetId);
-//                appWidgetManager.updateAppWidget(mAppWidgetId,remoteViews);
-
-                /* create the return intent, set it with the Activity result and finish the activity with passing back original appWidgetID*/
-
+                Context context=ConfigWidgetActivity.this;
                 Intent resultValue=new Intent();
-                resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,mAppWidgetId);
-                setResult(RESULT_OK,resultValue);
-                finish();
+
+                if(!ConfigWidgetActivity.gallery_Condition) { // when photo is not selected..
+                    setResult(RESULT_CANCELED,resultValue);
+                    finish();
+                }
+                else { // when photo is selected..
+                    /*update the App Widget when configuration is complete*/
+
+                    WidgetProvider.updateWidget(context, AppWidgetManager.getInstance(context), mAppWidgetId); // send broadcast
+
+                    /* create the return intent, set it with the Activity result and finish the activity with passing back original appWidgetID*/
+
+                    resultValue = new Intent();
+                    resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+                    setResult(RESULT_OK, resultValue);
+                    finish();
+                }
             }
         });
     }
 
-    /* onreceive로 옮기기 하기 */
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-//
-//        SharedPreferences setting=getSharedPreferences("setting",0);
-//
-//        switch(requestCode) {
-//            case GALLERY_ACTIVITY:
-//                if (resultCode == RESULT_OK) {
-//                    String path = setting.getString("photo", null);
-//                    remoteViews.setImageViewUri(R.id.widget_imageView, Uri.parse(path));
-//                }
-//                break;
-//            case TEXT_ACTIVITY:
-//                if (resultCode == RESULT_OK) {
-//                    /* only set text done */
-//                    String content = setting.getString("text", null);
-//                    remoteViews.setTextViewText(R.id.widget_textView, content);
-//                    /* other stuffs */
-//                }
-//                break;
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        switch(requestCode) {
+            case GALLERY_ACTIVITY:
+                if (resultCode == RESULT_OK)
+                    gallery_Condition=true;
+                break;
+        }
+    }
 }

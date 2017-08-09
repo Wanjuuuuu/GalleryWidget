@@ -82,6 +82,7 @@ public class GalleryMenuActivity extends AppCompatActivity implements PhotoAdapt
         button_back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+//                setResult(RESULT_CANCELED);
                 finish();
             }
         });
