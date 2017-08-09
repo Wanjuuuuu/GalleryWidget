@@ -29,11 +29,12 @@ import java.util.List;
 public class GalleryMenuActivity extends AppCompatActivity implements PhotoAdapter.PhotoClickListener {
     private RecyclerView photoListView;
     private PhotoAdapter adapter;
+    private final int STORAGE_PERMISSION_REQUEST=2017;
+
     private SharedPreferences setting;
     private SharedPreferences.Editor editor;
     private String path=null;
-
-    private final int STORAGE_PERMISSION_REQUEST=2017;
+    public static final String PHOTO="photo";
 
     /*functions needed : connection with gallery and choose the photo, saving button and change the photo, back button*/
 
@@ -64,11 +65,12 @@ public class GalleryMenuActivity extends AppCompatActivity implements PhotoAdapt
                     Toast.makeText(getApplicationContext(),"You haven't chosen a photo yet",Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 setting=getSharedPreferences("setting",0);
                 editor=setting.edit();
 
-                editor.remove("photo");
-                editor.putString("photo",path);
+                editor.remove(PHOTO);
+                editor.putString(PHOTO,path);
                 editor.commit();
 
                 setResult(RESULT_OK);

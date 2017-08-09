@@ -2,6 +2,7 @@ package com.example.wanjukim.gallerywidget.activities;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.example.wanjukim.gallerywidget.WidgetProvider;
 public class TextMenuActivity extends Activity {
     private SharedPreferences setting;
     private SharedPreferences.Editor editor;
+    public static final String TEXT="text";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,12 +37,13 @@ public class TextMenuActivity extends Activity {
             @Override
             public void onClick(View v) { // 모든 것들을 위젯에 업데이트 시켜주어야함 // 현재는 text만 넘겨줌
                 String text=editText.getText().toString();
+//                Context context=ConfigWidgetActivity.this;
 
                 setting=getSharedPreferences("setting",0);
                 editor=setting.edit();
 
-                editor.remove("text"); // get rid of previous saved text
-                editor.putString("text",text); // put new text in shared preferences
+                editor.remove(TEXT); // get rid of previous saved text
+                editor.putString(TEXT,text); // put new text in shared preferences
                 /* other stuffs */
                 editor.commit();
 
