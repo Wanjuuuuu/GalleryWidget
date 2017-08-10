@@ -58,16 +58,13 @@ public class WidgetProvider extends AppWidgetProvider{
     }
 
     public void individualUpdate(Context context,AppWidgetManager appWidgetManager,int appWidgetId){
+        /* set view to be moved to ConfigWidgetAcitivity when clicking */
 
-        /* when clicking, move to ConfigWidgetAcitivity */
-
-        Intent intent=new Intent(context,ConfigWidgetActivity.class);
-        PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,0);
+        Intent intent=new Intent(context,ConfigWidgetActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); //
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
+        PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_UPDATE_CURRENT); //
 
         RemoteViews updateViews=new RemoteViews(context.getPackageName(),R.layout.widget_layout);
-
-//        Log.d(TAG0,"appWidgetID : "+appWidgetId+ " path : "+ path+", content : "+content);
-
         updateViews.setOnClickPendingIntent(R.id.mLayout,pendingIntent);
 
         /* getting data from shared preferences and updating */

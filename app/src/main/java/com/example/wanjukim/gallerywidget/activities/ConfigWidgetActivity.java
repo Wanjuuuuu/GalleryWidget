@@ -25,7 +25,7 @@ import com.example.wanjukim.gallerywidget.WidgetProvider;
  */
 
 public class ConfigWidgetActivity extends Activity {
-    private static int mAppWidgetId;
+    private int mAppWidgetId;
     private static boolean gallery_Condition; // not edited
 //    private static boolean text_condition=false; // not edited
     private Button buttonToGallery;
@@ -45,9 +45,9 @@ public class ConfigWidgetActivity extends Activity {
         final Intent intent=getIntent();
         Bundle extras=intent.getExtras(); // retrieve data
 
-        if(extras!=null){
-            mAppWidgetId=extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-            Log.d("Debugging_ ","ID: " +mAppWidgetId);
+        if(extras!=null) {
+            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            Log.d("Debugging_ ", "ID: " + mAppWidgetId);
         }
 
         /* perform App Widget configuration */
