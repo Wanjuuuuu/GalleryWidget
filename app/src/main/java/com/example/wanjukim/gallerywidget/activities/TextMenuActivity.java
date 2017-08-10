@@ -21,14 +21,17 @@ import com.example.wanjukim.gallerywidget.WidgetProvider;
  */
 
 public class TextMenuActivity extends Activity {
-    private SharedPreferences setting;
-    private SharedPreferences.Editor editor;
+    private int appWidgetId;
+
     public static final String TEXT="text";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.widget_config_text);
+
+        Intent intent=getIntent();
+        appWidgetId=intent.getExtras().getInt("appWidgetId");
 
         final EditText editText=(EditText)findViewById(R.id.edit_text);
         final Button button_save=(Button)findViewById(R.id.text_save_button);
@@ -39,8 +42,8 @@ public class TextMenuActivity extends Activity {
                 String text=editText.getText().toString();
 //                Context context=ConfigWidgetActivity.this;
 
-                setting=getSharedPreferences("setting",0);
-                editor=setting.edit();
+                SharedPreferences setting=getSharedPreferences(String.valueOf(appWidgetId),0);
+                SharedPreferences.Editor editor=setting.edit();
 
                 editor.remove(TEXT); // get rid of previous saved text
                 editor.putString(TEXT,text); // put new text in shared preferences

@@ -59,6 +59,7 @@ public class ConfigWidgetActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent_gallery=new Intent(getApplicationContext(),GalleryMenuActivity.class);
+                intent_gallery.putExtra("appWidgetId",mAppWidgetId); // key value of shared preference
 //                startActivity(intent_gallery);
                 startActivityForResult(intent_gallery,GALLERY_ACTIVITY);
             }
@@ -69,6 +70,7 @@ public class ConfigWidgetActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent_textMenu=new Intent(getApplicationContext(),TextMenuActivity.class);
+                intent_textMenu.putExtra("appWidgetId",mAppWidgetId); // key value of shared preference
                 startActivity(intent_textMenu);
 //                startActivityForResult(intent_textMenu,TEXT_ACTIVITY);
             }
@@ -85,7 +87,7 @@ public class ConfigWidgetActivity extends Activity {
                 Intent resultValue=new Intent();
 
                 if(!ConfigWidgetActivity.gallery_Condition) { // when photo is not selected..
-                    setResult(RESULT_CANCELED,resultValue);
+                    setResult(RESULT_CANCELED,resultValue); // don't let make a app widget
                     finish();
                 }
                 else { // when photo is selected..

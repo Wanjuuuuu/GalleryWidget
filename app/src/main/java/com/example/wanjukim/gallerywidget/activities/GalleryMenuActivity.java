@@ -31,10 +31,11 @@ public class GalleryMenuActivity extends AppCompatActivity implements PhotoAdapt
     private PhotoAdapter adapter;
     private final int STORAGE_PERMISSION_REQUEST=2017;
 
-    private SharedPreferences setting;
-    private SharedPreferences.Editor editor;
     private String path=null;
+    private int appWidgetId;
+
     public static final String PHOTO="photo";
+
 
     /*functions needed : connection with gallery and choose the photo, saving button and change the photo, back button*/
 
@@ -43,6 +44,9 @@ public class GalleryMenuActivity extends AppCompatActivity implements PhotoAdapt
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.widget_config_gallery);
+
+        Intent intent=getIntent();
+        appWidgetId=intent.getExtras().getInt("appWidgetId");
 
         photoListView=(RecyclerView)findViewById(R.id.recyclerview_gallery);
 
@@ -66,8 +70,8 @@ public class GalleryMenuActivity extends AppCompatActivity implements PhotoAdapt
                     return;
                 }
 
-                setting=getSharedPreferences("setting",0);
-                editor=setting.edit();
+                SharedPreferences setting=getSharedPreferences(String.valueOf(appWidgetId),0);
+                SharedPreferences.Editor editor=setting.edit();
 
                 editor.remove(PHOTO);
                 editor.putString(PHOTO,path);
@@ -82,7 +86,7 @@ public class GalleryMenuActivity extends AppCompatActivity implements PhotoAdapt
         button_back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-//                setResult(RESULT_CANCELED);
+                setResult(RESULT_CANCELED);
                 finish();
             }
         });

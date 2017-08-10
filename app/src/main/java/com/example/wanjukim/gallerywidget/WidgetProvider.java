@@ -72,11 +72,13 @@ public class WidgetProvider extends AppWidgetProvider{
 
         /* getting data from shared preferences and updating */
 
-        SharedPreferences setting=context.getSharedPreferences("setting",0);
+        SharedPreferences setting=context.getSharedPreferences(String.valueOf(appWidgetId),0);
 
         String path = setting.getString(GalleryMenuActivity.PHOTO, null);
         String content = setting.getString(TextMenuActivity.TEXT, null);
-        Log.d(TAG1,"appWidgetID : "+widgetId+ " path : "+ path+", content : "+content);
+
+        if(path==null)
+            path="drawble://"+R.drawable.photo_vertical;
 
         updateViews.setTextViewText(R.id.widget_textView, content);
         updateViews.setImageViewUri(R.id.widget_imageView, Uri.parse(path));
