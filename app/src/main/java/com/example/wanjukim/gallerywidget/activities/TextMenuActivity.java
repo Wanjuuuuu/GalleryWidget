@@ -1,21 +1,16 @@
 package com.example.wanjukim.gallerywidget.activities;
 
 import android.app.Activity;
-import android.appwidget.AppWidgetManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.wanjukim.gallerywidget.R;
-import com.example.wanjukim.gallerywidget.WidgetProvider;
 
 /**
  * Created by Wanju Kim on 2017-07-13.
@@ -30,7 +25,7 @@ public class TextMenuActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.widget_config_text);
+        setContentView(R.layout.widget_config_text2);
 
         Intent intent=getIntent();
         appWidgetId=intent.getExtras().getInt("appWidgetId");

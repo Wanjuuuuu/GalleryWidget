@@ -62,10 +62,10 @@ public class WidgetProvider extends AppWidgetProvider{
 
         Intent intent=new Intent(context,ConfigWidgetActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // meaning?
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId); // manually sending appWidgetId to update the data
-        PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_UPDATE_CURRENT); // meaning?
+        PendingIntent pendingIntent=PendingIntent.getActivity(context,appWidgetId,intent,PendingIntent.FLAG_UPDATE_CURRENT); // requestCode : not 0, but appWidgetId
 
         RemoteViews updateViews=new RemoteViews(context.getPackageName(),R.layout.widget_layout);
-        updateViews.setOnClickPendingIntent(R.id.widget_textView,pendingIntent);
+        updateViews.setOnClickPendingIntent(R.id.mLayout,pendingIntent);
 
         /* getting data from shared preferences and updating */
 

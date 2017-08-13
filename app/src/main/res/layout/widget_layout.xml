@@ -9,11 +9,11 @@
 
     <ImageView
         android:id="@+id/widget_imageView"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/photo_vertical" />
+        android:src="@drawable/photo" />
 
     <LinearLayout
         android:layout_width="match_parent"
