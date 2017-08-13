@@ -9,9 +9,12 @@ public class Photo {
     private int photoId;
     private String path;
 
+    private boolean flag = false;
+
     public int getBucketId(){
         return bucketId;
     }
+
 
     public void setBucketId(int bucketId){
         this.bucketId=bucketId;
@@ -23,5 +26,13 @@ public class Photo {
 
     public void setPath(String path){
         this.path=path;
+    }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 }

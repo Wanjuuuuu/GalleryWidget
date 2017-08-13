@@ -26,7 +26,7 @@ import com.example.wanjukim.gallerywidget.WidgetProvider;
 
 public class ConfigWidgetActivity extends Activity {
     private int mAppWidgetId;
-    private static boolean gallery_Condition; // not edited
+    private static boolean gallery_Condition=false; // photo hasn't been selected yet
 //    private static boolean text_condition=false; // not edited
     private Button buttonToGallery;
     private Button buttonToTextMenu;
@@ -51,8 +51,6 @@ public class ConfigWidgetActivity extends Activity {
         }
 
         /* perform App Widget configuration */
-
-        gallery_Condition=false; // photo hasn't been selected yet
 
         buttonToGallery=(Button)findViewById(R.id.config_option_button1); // Gallery option
         buttonToGallery.setOnClickListener(new View.OnClickListener(){
@@ -85,8 +83,8 @@ public class ConfigWidgetActivity extends Activity {
                 Intent resultValue=new Intent();
 
                 if(!ConfigWidgetActivity.gallery_Condition) { // when photo is not selected..
-                    setResult(RESULT_CANCELED,resultValue); // don't let make a app widget
-                    finish();
+                    Toast.makeText(context,"You didn't choose a picture for this widget. Try again!",Toast.LENGTH_LONG).show();
+                    return;
                 }
                 else { // when photo is selected..
                     /*update the App Widget when configuration is complete*/
@@ -109,7 +107,7 @@ public class ConfigWidgetActivity extends Activity {
         switch(requestCode) {
             case GALLERY_ACTIVITY:
                 if (resultCode == RESULT_OK)
-                    gallery_Condition=true; // photo has been selected just now
+                    gallery_Condition=true; // photo has been selected at once
                 break;
         }
     }

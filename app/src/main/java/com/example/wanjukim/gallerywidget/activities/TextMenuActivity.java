@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import com.example.wanjukim.gallerywidget.WidgetProvider;
 
 public class TextMenuActivity extends Activity {
     private int appWidgetId;
+//    private SharedPreferences setting;
 
     public static final String TEXT="text";
 
@@ -33,7 +35,18 @@ public class TextMenuActivity extends Activity {
         Intent intent=getIntent();
         appWidgetId=intent.getExtras().getInt("appWidgetId");
 
+        /* set the options according to previous choices */
+
+        SharedPreferences sp=getSharedPreferences(String.valueOf(appWidgetId),0);
         final EditText editText=(EditText)findViewById(R.id.edit_text);
+
+        String preText=sp.getString(TEXT,null);
+        Log.d("Debugging_ ","appWidgetID:"+appWidgetId+" preText:"+preText);
+
+        editText.setText(preText);
+
+        /* update the options which have been chosen newly */
+
         final Button button_save=(Button)findViewById(R.id.text_save_button);
 
         button_save.setOnClickListener(new View.OnClickListener(){

@@ -39,6 +39,7 @@ public class WidgetProvider extends AppWidgetProvider{
             /* individually app widget update */
 
             AppWidgetManager appWidgetManager=AppWidgetManager.getInstance(context);
+            Log.d("Debugging_ ","onReceive:: widgetID: "+widgetId);
             individualUpdate(context,appWidgetManager,widgetId);
             return;
         }
@@ -52,6 +53,7 @@ public class WidgetProvider extends AppWidgetProvider{
 
         for(int i=0;i<appWidgetIds.length;i++) {
             individualUpdate(context,appWidgetManager,appWidgetIds[i]);
+            Log.d("Debugging_there are ids","ID:" +appWidgetIds[i]);
         }
     }
 
@@ -63,7 +65,7 @@ public class WidgetProvider extends AppWidgetProvider{
         PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_UPDATE_CURRENT); // meaning?
 
         RemoteViews updateViews=new RemoteViews(context.getPackageName(),R.layout.widget_layout);
-        updateViews.setOnClickPendingIntent(R.id.mLayout,pendingIntent);
+        updateViews.setOnClickPendingIntent(R.id.widget_textView,pendingIntent);
 
         /* getting data from shared preferences and updating */
 
@@ -73,11 +75,11 @@ public class WidgetProvider extends AppWidgetProvider{
         String content = setting.getString(TextMenuActivity.TEXT, null);
 
         if(path==null)
-            path="drawble://"+R.drawable.photo_vertical;
+            updateViews.setImageViewResource(R.id.widget_imageView, R.drawable.photo_vertical);
+        else
+            updateViews.setImageViewUri(R.id.widget_imageView, Uri.parse(path));
 
         updateViews.setTextViewText(R.id.widget_textView, content);
-        updateViews.setImageViewUri(R.id.widget_imageView, Uri.parse(path));
-
         appWidgetManager.updateAppWidget(appWidgetId,updateViews); // real update here
     }
 

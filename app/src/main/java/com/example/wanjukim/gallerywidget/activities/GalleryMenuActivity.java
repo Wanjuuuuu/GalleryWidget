@@ -65,6 +65,7 @@ public class GalleryMenuActivity extends AppCompatActivity implements PhotoAdapt
         button_save.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+
                 if(path==null){
                     Toast.makeText(getApplicationContext(),"You haven't chosen a photo yet",Toast.LENGTH_SHORT).show();
                     return;
@@ -121,6 +122,6 @@ public class GalleryMenuActivity extends AppCompatActivity implements PhotoAdapt
     @Override
     public void onClickPhoto(Photo photo) {
         path=photo.getPath();
-        Toast.makeText(this,photo.getPath(),Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this,photo.getPath(),Toast.LENGTH_SHORT).show();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.wanjukim.gallerywidget.recyclerview;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,18 +58,22 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
     class PhotoViewHolder extends RecyclerView.ViewHolder{
         private ImageView photoImage;
-        private TextView photoPath;
         private Photo photo;
 
-        PhotoViewHolder(View itemView){
+        PhotoViewHolder(final View itemView){
             super(itemView);
             photoImage=(ImageView)itemView.findViewById(R.id.photo_image);
-//            photoPath=(TextView)itemView.findViewById(R.id.photo_path);
 
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     mclickListener.onClickPhoto(photo);
+
+                    for(Photo photo : photoList)
+                        photo.setFlag(false);
+
+                    photo.setFlag(true);
+                    notifyDataSetChanged();
                 }
             });
         }
@@ -76,6 +81,12 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
         private void bind(Photo photo){
             this.photo=photo;
             Glide.with(mcontext).load(photo.getPath()).into(photoImage);
+
+            if(photo.isFlag())
+                itemView.setBackgroundColor(ContextCompat.getColor(mcontext,R.color.gray));
+
+            else
+                itemView.setBackgroundColor(ContextCompat.getColor(mcontext,R.color.white));
 //            photoPath.setText(photo.getPath());
         }
     }
