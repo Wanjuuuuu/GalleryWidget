@@ -40,7 +40,6 @@ public class TextMenuActivity extends Activity {
             @Override
             public void onClick(View v) { // 모든 것들을 위젯에 업데이트 시켜주어야함 // 현재는 text만 넘겨줌
                 String text=editText.getText().toString();
-//                Context context=ConfigWidgetActivity.this;
 
                 SharedPreferences setting=getSharedPreferences(String.valueOf(appWidgetId),0);
                 SharedPreferences.Editor editor=setting.edit();

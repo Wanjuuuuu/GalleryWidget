@@ -52,7 +52,7 @@ public class ConfigWidgetActivity extends Activity {
 
         /* perform App Widget configuration */
 
-        gallery_Condition=false;
+        gallery_Condition=false; // photo hasn't been selected yet
 
         buttonToGallery=(Button)findViewById(R.id.config_option_button1); // Gallery option
         buttonToGallery.setOnClickListener(new View.OnClickListener(){
@@ -60,7 +60,6 @@ public class ConfigWidgetActivity extends Activity {
             public void onClick(View v) {
                 Intent intent_gallery=new Intent(getApplicationContext(),GalleryMenuActivity.class);
                 intent_gallery.putExtra("appWidgetId",mAppWidgetId); // key value of shared preference
-//                startActivity(intent_gallery);
                 startActivityForResult(intent_gallery,GALLERY_ACTIVITY);
             }
         });
@@ -72,7 +71,6 @@ public class ConfigWidgetActivity extends Activity {
                 Intent intent_textMenu=new Intent(getApplicationContext(),TextMenuActivity.class);
                 intent_textMenu.putExtra("appWidgetId",mAppWidgetId); // key value of shared preference
                 startActivity(intent_textMenu);
-//                startActivityForResult(intent_textMenu,TEXT_ACTIVITY);
             }
         });
 
@@ -111,7 +109,7 @@ public class ConfigWidgetActivity extends Activity {
         switch(requestCode) {
             case GALLERY_ACTIVITY:
                 if (resultCode == RESULT_OK)
-                    gallery_Condition=true;
+                    gallery_Condition=true; // photo has been selected just now
                 break;
         }
     }

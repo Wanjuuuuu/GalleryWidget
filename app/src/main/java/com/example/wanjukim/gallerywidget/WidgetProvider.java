@@ -36,12 +36,10 @@ public class WidgetProvider extends AppWidgetProvider{
     @Override
     public void onReceive(Context context, Intent intent) {
         if(CLICK_ACTION.equals(intent.getAction())){
-
             /* individually app widget update */
 
             AppWidgetManager appWidgetManager=AppWidgetManager.getInstance(context);
             individualUpdate(context,appWidgetManager,widgetId);
-
             return;
         }
         else
@@ -60,9 +58,9 @@ public class WidgetProvider extends AppWidgetProvider{
     public void individualUpdate(Context context,AppWidgetManager appWidgetManager,int appWidgetId){
         /* set view to be moved to ConfigWidgetAcitivity when clicking */
 
-        Intent intent=new Intent(context,ConfigWidgetActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); //
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
-        PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_UPDATE_CURRENT); //
+        Intent intent=new Intent(context,ConfigWidgetActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // meaning?
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId); // manually sending appWidgetId to update the data
+        PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_UPDATE_CURRENT); // meaning?
 
         RemoteViews updateViews=new RemoteViews(context.getPackageName(),R.layout.widget_layout);
         updateViews.setOnClickPendingIntent(R.id.mLayout,pendingIntent);
@@ -80,16 +78,14 @@ public class WidgetProvider extends AppWidgetProvider{
         updateViews.setTextViewText(R.id.widget_textView, content);
         updateViews.setImageViewUri(R.id.widget_imageView, Uri.parse(path));
 
-        appWidgetManager.updateAppWidget(appWidgetId,updateViews);
+        appWidgetManager.updateAppWidget(appWidgetId,updateViews); // real update here
     }
 
     public static void updateWidget(Context context,AppWidgetManager appWidgetManager,int appWidgetId){ // manager?
         widgetId=appWidgetId;
-//        endServiceFlag=false;
         Intent intent=new Intent();
         intent.setAction(CLICK_ACTION);
         context.sendBroadcast(intent);
-//        서비스 사용시 추가할 코드있음
     }
 
     @Override
