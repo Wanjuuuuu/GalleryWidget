@@ -8,6 +8,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -77,7 +81,7 @@ public class WidgetProvider extends AppWidgetProvider{
         if(path==null)
             updateViews.setImageViewResource(R.id.widget_imageView, R.drawable.photo_vertical);
         else
-            updateViews.setImageViewUri(R.id.widget_imageView, Uri.parse(path));
+            updateViews.setImageViewBitmap(R.id.widget_imageView,rescaleBitmap(path));
 
         updateViews.setTextViewText(R.id.widget_textView, content);
         appWidgetManager.updateAppWidget(appWidgetId,updateViews); // real update here
@@ -88,6 +92,82 @@ public class WidgetProvider extends AppWidgetProvider{
         Intent intent=new Intent();
         intent.setAction(CLICK_ACTION);
         context.sendBroadcast(intent);
+    }
+
+    /* scale down the bitmap and rotate when selected image is a camera photo*/
+
+    public Bitmap rescaleBitmap(String path){
+        /* before allocating memory, check whether it fits within the available memory */
+
+        BitmapFactory.Options options=new BitmapFactory.Options();
+        options.inJustDecodeBounds=true; // not allocating yet
+        BitmapFactory.decodeFile(path,options);
+
+        options.inSampleSize=calculateSampleSize(options); // calculating fit size
+
+        options.inJustDecodeBounds=false;
+
+        Bitmap image=BitmapFactory.decodeFile(path,options); // resizing and allocating memory
+        Log.d("Debugging_ image","Height: "+image.getHeight()+"Width: "+image.getWidth());
+
+        Bitmap newImage;
+
+        /* solving problem when using image take from camera : rotation problem */
+
+        try{
+            ExifInterface exif = new ExifInterface(path);
+
+            int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            int exifDegree = exifOrientationToDegrees(exifOrientation);
+
+            Matrix rotateMatrix = new Matrix();
+            rotateMatrix.postRotate(exifDegree);
+
+            newImage = Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), rotateMatrix, false);
+
+            Log.d("Debugging_ image","Height: "+image.getHeight()+"Width: "+image.getWidth());
+            Log.d("Debugging_ newImage","Height: "+newImage.getHeight()+"Width: "+newImage.getWidth());
+
+            return newImage;
+        }
+        catch(Exception e)
+        {
+            Log.d("Debugging_ bitmap","");
+        }
+
+        return image; //
+    }
+
+    public int calculateSampleSize(BitmapFactory.Options options){
+        int height=options.outHeight;
+        int width=options.outWidth;
+
+        int reqHeight=1280; // square root 값 1000
+        int reqWidth=1280;
+
+        int sampleSize=1;
+
+        Log.d("Debugging_ calculate_be","height: "+height+"width: "+width);
+
+        if(height>reqHeight||width>reqWidth){
+            while((height/sampleSize)>=reqHeight||(width/sampleSize)>=reqWidth) {
+                Log.d("Debugging_calculate","sampleSize: "+sampleSize);
+                sampleSize *= 2;
+            }
+        }
+
+        return sampleSize;
+    }
+
+    public int exifOrientationToDegrees(int exifOrientation){
+        if(exifOrientation==ExifInterface.ORIENTATION_ROTATE_90)
+            return 90;
+        else if(exifOrientation==ExifInterface.ORIENTATION_ROTATE_180)
+            return 180;
+        else if(exifOrientation==ExifInterface.ORIENTATION_ROTATE_270)
+            return 270;
+        else
+            return 0;
     }
 
     @Override
