@@ -15,7 +15,6 @@ public class Photo {
         return bucketId;
     }
 
-
     public void setBucketId(int bucketId){
         this.bucketId=bucketId;
     }

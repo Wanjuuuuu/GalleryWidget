@@ -10,7 +10,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -76,14 +79,18 @@ public class WidgetProvider extends AppWidgetProvider{
         SharedPreferences setting=context.getSharedPreferences(String.valueOf(appWidgetId),0);
 
         String path = setting.getString(GalleryMenuActivity.PHOTO, null);
-        String content = setting.getString(TextMenuActivity.TEXT, null);
+        String content = setting.getString(TextMenuActivity.TEXT, "");
+        String font=setting.getString(TextMenuActivity.FONT,TextMenuActivity.FONT_DEFAULT);
+        int size=setting.getInt(TextMenuActivity.SIZE,TextMenuActivity.SIZE_DEFAULT);
 
         if(path==null)
             updateViews.setImageViewResource(R.id.widget_imageView, R.drawable.photo_vertical);
         else
             updateViews.setImageViewBitmap(R.id.widget_imageView,rescaleBitmap(path));
 
-        updateViews.setTextViewText(R.id.widget_textView, content);
+        updateViews.setImageViewBitmap(R.id.widget_textImage,setText(context,content,font,size,TextMenuActivity.COLOR_DEFAULT));
+
+
         appWidgetManager.updateAppWidget(appWidgetId,updateViews); // real update here
     }
 
@@ -92,6 +99,27 @@ public class WidgetProvider extends AppWidgetProvider{
         Intent intent=new Intent();
         intent.setAction(CLICK_ACTION);
         context.sendBroadcast(intent);
+    }
+
+    /* setting font,size,color ; to use Typeface, text should be dealt as an imageView */
+
+    public Bitmap setText(Context context, String text, String font, int size, int color){
+        Bitmap textImage=Bitmap.createBitmap(10,10,Bitmap.Config.ARGB_8888);
+        Canvas canvas=new Canvas(textImage);
+        Paint paint=new Paint();
+        Typeface typeface_font=Typeface.createFromAsset(context.getAssets(),font);
+
+        paint.setAntiAlias(true);
+        paint.setSubpixelText(true);
+        paint.setTypeface(typeface_font);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(color);
+        paint.setTextSize(size);
+        paint.setTextAlign(Paint.Align.CENTER);
+
+        canvas.drawText(text,10,20,paint); // ?
+
+        return textImage;
     }
 
     /* scale down the bitmap and rotate when selected image is a camera photo*/

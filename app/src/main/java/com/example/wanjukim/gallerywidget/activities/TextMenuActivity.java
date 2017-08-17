@@ -24,7 +24,13 @@ public class TextMenuActivity extends Activity {
     public static final String SIZE="size";
     public static final String COLOR="color";
 
+    public static final String FONT_DEFAULT="NanumBarunGothic.ttf";
+    public static final int SIZE_DEFAULT=12;
+    public static final int COLOR_DEFAULT=0x000000; // black
+
     private int appWidgetId;
+    private String font;
+    private int size;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,8 +44,10 @@ public class TextMenuActivity extends Activity {
 
         /* all options for text */
 
-        final String[] fonts={"sans","serif","monospace"};
-        final String[] sizes={"small","normal","large"}; // 12, 16, 20 ??
+        final String[] fonts_user={"NanumBarunGothic","NanumSquare"};
+        final String[] fonts_setting={"NanumBarunGothic.ttf","NanumSquareR.ttf"};
+        final String[] sizes_user={"small","normal","large"};
+        final int[] sizes_setting={12,16,20};
 
         final EditText editText=(EditText)findViewById(R.id.edit_text);
         final Spinner spinnerFont=(Spinner)findViewById(R.id.spinner_font);
@@ -54,14 +62,17 @@ public class TextMenuActivity extends Activity {
 
         /* setting spinner_font */
 
-        ArrayAdapter adapter_font=new ArrayAdapter(getApplicationContext(),R.layout.spinner,fonts);
-        adapter_font.setDropDownViewResource(R.layout.spinner_dropdown);
+        ArrayAdapter adapter_font=new ArrayAdapter(getApplicationContext(),R.layout.spinner,fonts_user); // first default
+        adapter_font.setDropDownViewResource(R.layout.spinner_dropdown); // dropdown
         spinnerFont.setAdapter(adapter_font);
+
+        font=null; // not choosen
 
         spinnerFont.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener(){
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        font=fonts_setting[position]; //
                     }
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
@@ -71,14 +82,17 @@ public class TextMenuActivity extends Activity {
 
         /* setting spinner_size */
 
-        ArrayAdapter adapter_size=new ArrayAdapter(getApplicationContext(),R.layout.spinner,sizes);
-        adapter_size.setDropDownViewResource(R.layout.spinner_dropdown);
+        ArrayAdapter adapter_size=new ArrayAdapter(getApplicationContext(),R.layout.spinner,sizes_user); // first default
+        adapter_size.setDropDownViewResource(R.layout.spinner_dropdown); // dropdown
         spinnerSize.setAdapter(adapter_size);
+
+        size=0; // not chosen
 
         spinnerSize.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener(){
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        size=sizes_setting[position]; //
                     }
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
@@ -100,7 +114,17 @@ public class TextMenuActivity extends Activity {
 
                 editor.remove(TEXT); // get rid of previous saved text
                 editor.putString(TEXT,text); // put new text in shared preferences
-                /* other stuffs */
+
+                if(font!=null) { // Chosen (if not chosen, using previous chosen one)
+                    editor.remove(FONT);
+                    editor.putString(FONT, font);
+                }
+
+                if(size!=0) { // Chosen (if not chosen, using previous chosen one)
+                    editor.remove(SIZE);
+                    editor.putInt(SIZE,size);
+                }
+
                 editor.commit();
 
                 setResult(RESULT_OK);
