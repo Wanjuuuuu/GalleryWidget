@@ -30,7 +30,7 @@ public class ConfigWidgetActivity extends Activity {
 //    private static boolean text_condition=false; // not edited
     private Button buttonToGallery;
     private Button buttonToTextMenu;
-    private Button button;
+    private Button buttonForFinish;
 
     private static final int GALLERY_ACTIVITY=2018;
     private static final int TEXT_ACTIVITY=2019;
@@ -74,8 +74,8 @@ public class ConfigWidgetActivity extends Activity {
 
         /* send app widget update */
 
-        button=(Button)findViewById(R.id.config_button);
-        button.setOnClickListener(new View.OnClickListener(){
+        buttonForFinish=(Button)findViewById(R.id.config_button);
+        buttonForFinish.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
 

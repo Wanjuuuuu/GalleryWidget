@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.example.wanjukim.gallerywidget.R;
 
@@ -17,30 +19,74 @@ import com.example.wanjukim.gallerywidget.R;
  */
 
 public class TextMenuActivity extends Activity {
-    private int appWidgetId;
-//    private SharedPreferences setting;
-
     public static final String TEXT="text";
+    public static final String FONT="font";
+    public static final String SIZE="size";
+    public static final String COLOR="color";
+
+    private int appWidgetId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.widget_config_text2);
+        setContentView(R.layout.widget_config_text);
+
+        /* Getting appWidgetId for preference key */
 
         Intent intent=getIntent();
         appWidgetId=intent.getExtras().getInt("appWidgetId");
 
+        /* all options for text */
+
+        final String[] fonts={"sans","serif","monospace"};
+        final String[] sizes={"small","normal","large"}; // 12, 16, 20 ??
+
+        final EditText editText=(EditText)findViewById(R.id.edit_text);
+        final Spinner spinnerFont=(Spinner)findViewById(R.id.spinner_font);
+        final Spinner spinnerSize=(Spinner)findViewById(R.id.spinner_size);
+        //color option needs to be added
+
         /* set the options according to previous choices */
 
         SharedPreferences sp=getSharedPreferences(String.valueOf(appWidgetId),0);
-        final EditText editText=(EditText)findViewById(R.id.edit_text);
-
         String preText=sp.getString(TEXT,null);
-        Log.d("Debugging_ ","appWidgetID:"+appWidgetId+" preText:"+preText);
+        editText.setText(preText); // only editText
 
-        editText.setText(preText);
+        /* setting spinner_font */
 
-        /* update the options which have been chosen newly */
+        ArrayAdapter adapter_font=new ArrayAdapter(getApplicationContext(),R.layout.spinner,fonts);
+        adapter_font.setDropDownViewResource(R.layout.spinner_dropdown);
+        spinnerFont.setAdapter(adapter_font);
+
+        spinnerFont.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener(){
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                }
+        );
+
+        /* setting spinner_size */
+
+        ArrayAdapter adapter_size=new ArrayAdapter(getApplicationContext(),R.layout.spinner,sizes);
+        adapter_size.setDropDownViewResource(R.layout.spinner_dropdown);
+        spinnerSize.setAdapter(adapter_size);
+
+        spinnerSize.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener(){
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                }
+        );
+
+        /* update text as what has been chosen newly */
 
         final Button button_save=(Button)findViewById(R.id.text_save_button);
 
@@ -71,6 +117,4 @@ public class TextMenuActivity extends Activity {
             }
         });
     }
-
-    /*functions needed : text written by user, saving button and change the text, back button*/
 }
