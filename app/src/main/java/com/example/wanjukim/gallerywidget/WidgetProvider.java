@@ -11,9 +11,12 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -78,18 +81,17 @@ public class WidgetProvider extends AppWidgetProvider{
 
         SharedPreferences setting=context.getSharedPreferences(String.valueOf(appWidgetId),0);
 
-        String path = setting.getString(GalleryMenuActivity.PHOTO, null);
+        String path = setting.getString(GalleryMenuActivity.PHOTO,null);
         String content = setting.getString(TextMenuActivity.TEXT, "");
         String font=setting.getString(TextMenuActivity.FONT,TextMenuActivity.FONT_DEFAULT);
         int size=setting.getInt(TextMenuActivity.SIZE,TextMenuActivity.SIZE_DEFAULT);
 
-        if(path==null)
-            updateViews.setImageViewResource(R.id.widget_imageView, R.drawable.photo_vertical);
-        else
-            updateViews.setImageViewBitmap(R.id.widget_imageView,rescaleBitmap(path));
+        Bitmap photo=rescaleBitmap(context,path);
+        updateViews.setImageViewBitmap(R.id.widget_imageView, photo);
 
-        updateViews.setImageViewBitmap(R.id.widget_textImage,setText(context,content,font,size,TextMenuActivity.COLOR_DEFAULT));
+        // layout works well
 
+        updateViews.setImageViewBitmap(R.id.widget_textImage,setText(context,photo,content,font,size,TextMenuActivity.COLOR_DEFAULT));
 
         appWidgetManager.updateAppWidget(appWidgetId,updateViews); // real update here
     }
@@ -103,42 +105,69 @@ public class WidgetProvider extends AppWidgetProvider{
 
     /* setting font,size,color ; to use Typeface, text should be dealt as an imageView */
 
-    public Bitmap setText(Context context, String text, String font, int size, int color){
-        Bitmap textImage=Bitmap.createBitmap(10,10,Bitmap.Config.ARGB_8888);
+    public Bitmap setText(Context context, Bitmap photo, String text, String font, int size, int color){
+        Bitmap textImage=Bitmap.createBitmap(photo.getWidth(),photo.getHeight(),Bitmap.Config.ARGB_8888);
         Canvas canvas=new Canvas(textImage);
         Paint paint=new Paint();
-        Typeface typeface_font=Typeface.createFromAsset(context.getAssets(),font);
+
+        Typeface typeface_font=null;
+
+        switch(font){
+            case "SANS_SERIF":
+                typeface_font=Typeface.create(Typeface.SANS_SERIF,Typeface.BOLD);
+                break;
+            case "SERIF":
+                typeface_font=Typeface.create(Typeface.SERIF,Typeface.BOLD);
+                break;
+            case "MONOSPACE":
+                typeface_font=Typeface.create(Typeface.MONOSPACE,Typeface.BOLD);
+                break;
+        }
 
         paint.setAntiAlias(true);
-        paint.setSubpixelText(true);
+        paint.setSubpixelText(false);
         paint.setTypeface(typeface_font);
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(color);
-        paint.setTextSize(size);
-        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setColor(color); // not defined how to set color
+        paint.setTextSize(size); // its size is changing when transforming the size of widget
 
-        canvas.drawText(text,10,20,paint); // ?
+        Rect bounds=new Rect();
+        paint.getTextBounds(text,0,text.length(),bounds);
+
+        int x=(photo.getWidth()-bounds.width())/2;
+        int y=(photo.getHeight()-bounds.height())/2;
+
+        canvas.drawText(text,x,y,paint); // max length of edittext = 40
 
         return textImage;
     }
 
     /* scale down the bitmap and rotate when selected image is a camera photo*/
 
-    public Bitmap rescaleBitmap(String path){
+    public Bitmap rescaleBitmap(Context context, String path){
         /* before allocating memory, check whether it fits within the available memory */
+
+        Bitmap image,newImage;
 
         BitmapFactory.Options options=new BitmapFactory.Options();
         options.inJustDecodeBounds=true; // not allocating yet
-        BitmapFactory.decodeFile(path,options);
+
+        if(path==null)
+            BitmapFactory.decodeResource(context.getResources(),R.drawable.photo);
+        else
+            BitmapFactory.decodeFile(path,options);
 
         options.inSampleSize=calculateSampleSize(options); // calculating fit size
 
         options.inJustDecodeBounds=false;
 
-        Bitmap image=BitmapFactory.decodeFile(path,options); // resizing and allocating memory
-        Log.d("Debugging_ image","Height: "+image.getHeight()+"Width: "+image.getWidth());
+        if(path==null)
+            image=BitmapFactory.decodeResource(context.getResources(),R.drawable.photo);
+        else
+            image=BitmapFactory.decodeFile(path,options); // resizing and allocating memory
 
-        Bitmap newImage;
+        Log.d("Debugging_ path","Path: "+path);
+        Log.d("Debugging_ image","Height: "+image.getHeight()+"Width: "+image.getWidth());
 
         /* solving problem when using image take from camera : rotation problem */
 

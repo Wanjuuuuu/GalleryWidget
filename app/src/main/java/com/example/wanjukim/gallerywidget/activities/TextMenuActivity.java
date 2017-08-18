@@ -3,6 +3,7 @@ package com.example.wanjukim.gallerywidget.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -24,9 +25,9 @@ public class TextMenuActivity extends Activity {
     public static final String SIZE="size";
     public static final String COLOR="color";
 
-    public static final String FONT_DEFAULT="NanumBarunGothic.ttf";
+    public static final String FONT_DEFAULT="SANS_SERIF";
     public static final int SIZE_DEFAULT=12;
-    public static final int COLOR_DEFAULT=0x000000; // black
+    public static final int COLOR_DEFAULT=0xFF000000; // black
 
     private int appWidgetId;
     private String font;
@@ -44,10 +45,10 @@ public class TextMenuActivity extends Activity {
 
         /* all options for text */
 
-        final String[] fonts_user={"NanumBarunGothic","NanumSquare"};
-        final String[] fonts_setting={"NanumBarunGothic.ttf","NanumSquareR.ttf"};
-        final String[] sizes_user={"small","normal","large"};
-        final int[] sizes_setting={12,16,20};
+        final String[] fonts_user={"SANS_SERIF","SERIF","MONOSPACE"};
+        final String[] fonts_setting={"SANS_SERIF","SERIF","MONOSPACE"};
+        final String[] sizes_user={"Small","Normal","Large"};
+        final int[] sizes_setting={40,80,100};
 
         final EditText editText=(EditText)findViewById(R.id.edit_text);
         final Spinner spinnerFont=(Spinner)findViewById(R.id.spinner_font);
@@ -99,6 +100,10 @@ public class TextMenuActivity extends Activity {
                     }
                 }
         );
+
+        /* color setting using recyclerView */
+
+        //....
 
         /* update text as what has been chosen newly */
 
