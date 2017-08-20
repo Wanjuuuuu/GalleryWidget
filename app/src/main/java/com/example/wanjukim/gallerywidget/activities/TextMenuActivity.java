@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.wanjukim.gallerywidget.R;
+import com.example.wanjukim.gallerywidget.SpinnerArrayAdater;
 
 /**
  * Created by Wanju Kim on 2017-07-13.
@@ -48,7 +49,7 @@ public class TextMenuActivity extends Activity {
         final String[] fonts_user={"SANS_SERIF","SERIF","MONOSPACE"};
         final String[] fonts_setting={"SANS_SERIF","SERIF","MONOSPACE"};
         final String[] sizes_user={"Small","Normal","Large"};
-        final int[] sizes_setting={40,80,100};
+        final int[] sizes_setting={20,30,40};
 
         final EditText editText=(EditText)findViewById(R.id.edit_text);
         final Spinner spinnerFont=(Spinner)findViewById(R.id.spinner_font);
@@ -63,7 +64,7 @@ public class TextMenuActivity extends Activity {
 
         /* setting spinner_font */
 
-        ArrayAdapter adapter_font=new ArrayAdapter(getApplicationContext(),R.layout.spinner,fonts_user); // first default
+        ArrayAdapter adapter_font=new SpinnerArrayAdater(getApplicationContext(),R.layout.spinner,fonts_user,"font"); // to customise spinner
         adapter_font.setDropDownViewResource(R.layout.spinner_dropdown); // dropdown
         spinnerFont.setAdapter(adapter_font);
 
@@ -83,7 +84,7 @@ public class TextMenuActivity extends Activity {
 
         /* setting spinner_size */
 
-        ArrayAdapter adapter_size=new ArrayAdapter(getApplicationContext(),R.layout.spinner,sizes_user); // first default
+        ArrayAdapter adapter_size=new SpinnerArrayAdater(getApplicationContext(),R.layout.spinner,sizes_user,"size"); // to customise spinner
         adapter_size.setDropDownViewResource(R.layout.spinner_dropdown); // dropdown
         spinnerSize.setAdapter(adapter_size);
 
