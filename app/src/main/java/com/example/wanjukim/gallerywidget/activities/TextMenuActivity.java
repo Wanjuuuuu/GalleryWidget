@@ -23,16 +23,16 @@ import com.example.wanjukim.gallerywidget.SpinnerArrayAdater;
 public class TextMenuActivity extends Activity {
     public static final String TEXT="text";
     public static final String FONT="font";
-    public static final String SIZE="size";
+    public static final String ALIGN="align";
     public static final String COLOR="color";
 
     public static final String FONT_DEFAULT="SANS_SERIF";
-    public static final int SIZE_DEFAULT=12;
+    public static final String ALIGN_DEFAULT="Middle";
     public static final int COLOR_DEFAULT=0xFF000000; // black
 
     private int appWidgetId;
     private String font;
-    private int size;
+    private String align;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,12 +48,12 @@ public class TextMenuActivity extends Activity {
 
         final String[] fonts_user={"SANS_SERIF","SERIF","MONOSPACE"};
         final String[] fonts_setting={"SANS_SERIF","SERIF","MONOSPACE"};
-        final String[] sizes_user={"Small","Normal","Large"};
-        final int[] sizes_setting={20,30,40};
+        final String[] aligns_user={"Top","Middle","Bottom"};
+        final String[] aligns_setting={"Top","Middle","Bottom"};
 
         final EditText editText=(EditText)findViewById(R.id.edit_text);
         final Spinner spinnerFont=(Spinner)findViewById(R.id.spinner_font);
-        final Spinner spinnerSize=(Spinner)findViewById(R.id.spinner_size);
+        final Spinner spinnerAlign=(Spinner)findViewById(R.id.spinner_align);
         //color option needs to be added
 
         /* set the options according to previous choices */
@@ -82,19 +82,22 @@ public class TextMenuActivity extends Activity {
                 }
         );
 
-        /* setting spinner_size */
+        /* setting spinner_align */
 
-        ArrayAdapter adapter_size=new SpinnerArrayAdater(getApplicationContext(),R.layout.spinner,sizes_user,"size"); // to customise spinner
-        adapter_size.setDropDownViewResource(R.layout.spinner_dropdown); // dropdown
-        spinnerSize.setAdapter(adapter_size);
+        /* It supposed to be text size setting, however, text should be a bitmap file to change settings in app widget.
+           Therefore, I couldn't find the way to fix the size of text. This function has been changed to set the alignment of text. */
 
-        size=0; // not chosen
+        ArrayAdapter adapter_align=new SpinnerArrayAdater(getApplicationContext(),R.layout.spinner,aligns_user,"align"); // to customise spinner
+        adapter_align.setDropDownViewResource(R.layout.spinner_dropdown); // dropdown
+        spinnerAlign.setAdapter(adapter_align);
 
-        spinnerSize.setOnItemSelectedListener(
+        align=null; // not chosen
+
+        spinnerAlign.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener(){
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        size=sizes_setting[position]; //
+                        align=aligns_setting[position]; //
                     }
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
@@ -126,9 +129,9 @@ public class TextMenuActivity extends Activity {
                     editor.putString(FONT, font);
                 }
 
-                if(size!=0) { // Chosen (if not chosen, using previous chosen one)
-                    editor.remove(SIZE);
-                    editor.putInt(SIZE,size);
+                if(align!=null) { // Chosen (if not chosen, using previous chosen one)
+                    editor.remove(ALIGN);
+                    editor.putString(ALIGN,align);
                 }
 
                 editor.commit();

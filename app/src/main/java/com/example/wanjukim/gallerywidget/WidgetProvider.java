@@ -84,18 +84,15 @@ public class WidgetProvider extends AppWidgetProvider{
         String path = setting.getString(GalleryMenuActivity.PHOTO,null);
         String content = setting.getString(TextMenuActivity.TEXT, "12345");
         String font=setting.getString(TextMenuActivity.FONT,TextMenuActivity.FONT_DEFAULT);
-        int size=setting.getInt(TextMenuActivity.SIZE,TextMenuActivity.SIZE_DEFAULT);
+        String align=setting.getString(TextMenuActivity.ALIGN,TextMenuActivity.ALIGN_DEFAULT);
 
         Bitmap photo=rescaleBitmap(context,path);
         updateViews.setImageViewBitmap(R.id.widget_imageView, photo);
 
-        // layout works well
-
-        updateViews.setImageViewBitmap(R.id.widget_textImage,setText(appWidgetManager,context,photo,content,font,size,TextMenuActivity.COLOR_DEFAULT));
+        updateViews.setImageViewBitmap(R.id.widget_textImage,setText(appWidgetManager,context,photo,content,font,align,TextMenuActivity.COLOR_DEFAULT));
 
         appWidgetManager.updateAppWidget(appWidgetId,updateViews); // real update here
 
-//        Log.d("Debugging_ memory usage: ");
     }
 
     public static void updateWidget(Context context,AppWidgetManager appWidgetManager,int appWidgetId){ // manager?
@@ -107,7 +104,7 @@ public class WidgetProvider extends AppWidgetProvider{
 
     /* setting font,size,color ; to use Typeface, text should be dealt as an imageView */
 
-    public Bitmap setText(AppWidgetManager appWidgetManager,Context context, Bitmap photo, String text, String font, int size, int color){
+    public Bitmap setText(AppWidgetManager appWidgetManager,Context context, Bitmap photo, String text, String font, String align, int color){
 
         Bitmap textImage=Bitmap.createBitmap(photo.getWidth(),photo.getHeight(),Bitmap.Config.ARGB_8888);
         Canvas canvas=new Canvas(textImage);
@@ -132,7 +129,7 @@ public class WidgetProvider extends AppWidgetProvider{
         paint.setTypeface(typeface_font);
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(color); // not defined how to set color
-        paint.setTextSize(size); // its size is changing when transforming the size of widget
+        paint.setTextSize(40); // its size is changing when transforming the size of widget
 
         Rect originalBounds=new Rect();
         paint.getTextBounds(text,0,text.length(),originalBounds);
@@ -147,17 +144,28 @@ public class WidgetProvider extends AppWidgetProvider{
             paint.getTextBounds(text,0,textLength,sampleBounds);
         }
 
-        int textWidth=originalBounds.width();
-        int textHeight=originalBounds.height();
+        int textWidth=sampleBounds.width();
+        int textHeight=sampleBounds.height();
 
         int numOfLines=1; // number of text lines
 
         for(int len=textLength;len<text.length();len+=len)
-
             numOfLines++;
 
-        int x=(photo.getWidth()-sampleBounds.width())/2;
+        int x=(photo.getWidth()-textWidth)/2;
         int y=(photo.getHeight()-textHeight*numOfLines)/2;
+
+        switch (align){
+            case "Top":
+                y=(photo.getHeight()-textHeight*numOfLines)/5;
+                break;
+            case "Middle":
+                y=(photo.getHeight()-textHeight*numOfLines)/2;
+                break;
+            case "Bottom":
+                y=(photo.getHeight()-textHeight*numOfLines)*4/5;
+                break;
+        }
 
         int startIndex=0;
         int endIndex=textLength;

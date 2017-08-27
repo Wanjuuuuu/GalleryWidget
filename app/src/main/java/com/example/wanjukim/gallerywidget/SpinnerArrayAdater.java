@@ -20,7 +20,7 @@ public class SpinnerArrayAdater extends ArrayAdapter {
     private String type; // not static
 
     final Typeface[] fonts_setting={Typeface.SANS_SERIF,Typeface.SERIF,Typeface.MONOSPACE};
-    final int[] sizes_setting={20,30,40};
+//    final int[] sizes_setting={20,30,40};
 
     /* to get customised spinner */
 
@@ -47,7 +47,7 @@ public class SpinnerArrayAdater extends ArrayAdapter {
             return view;
         }
 
-        view.setTextSize(sizes_setting[position]);
+//        view.setTextSize(sizes_setting[position]);
 //        Log.d("Debugging_size,view: ",Integer.toString(sizes_setting[position]));
 
         return view;
@@ -66,7 +66,7 @@ public class SpinnerArrayAdater extends ArrayAdapter {
             return view;
         }
 
-        view.setTextSize(sizes_setting[position]);
+//        view.setTextSize(sizes_setting[position]);
 //        Log.d("Debugging_size,drop: ",Integer.toString(sizes_setting[position]));
 
         return view;
