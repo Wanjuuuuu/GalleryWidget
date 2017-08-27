@@ -17,7 +17,7 @@ import java.lang.reflect.Array;
  */
 
 public class SpinnerArrayAdater extends ArrayAdapter {
-    private String type;
+    private String type; // not static
 
     final Typeface[] fonts_setting={Typeface.SANS_SERIF,Typeface.SERIF,Typeface.MONOSPACE};
     final int[] sizes_setting={20,30,40};
@@ -38,17 +38,17 @@ public class SpinnerArrayAdater extends ArrayAdapter {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         TextView view=(TextView)super.getView(position, convertView, parent); // target view
-        Log.d("Debugging_view: ",type);
+//        Log.d("Debugging_view: ",type);
 
         if(type.equals("font")) {
             Typeface font = Typeface.create(fonts_setting[position], Typeface.BOLD);
             view.setTypeface(font);
-            Log.d("Debugging_font,view: ",Integer.toString(position));
+//            Log.d("Debugging_font,view: ",Integer.toString(position));
             return view;
         }
 
         view.setTextSize(sizes_setting[position]);
-        Log.d("Debugging_size,view: ",Integer.toString(sizes_setting[position]));
+//        Log.d("Debugging_size,view: ",Integer.toString(sizes_setting[position]));
 
         return view;
 
@@ -57,17 +57,17 @@ public class SpinnerArrayAdater extends ArrayAdapter {
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         TextView view=(TextView)super.getDropDownView(position, convertView, parent); // target view
-        Log.d("Debugging_view: ",type);
+//        Log.d("Debugging_view: ",type);
 
         if(type.equals("font")) {
             Typeface font = Typeface.create(fonts_setting[position], Typeface.BOLD);
             view.setTypeface(font);
-            Log.d("Debugging_font,drop: ",Integer.toString(position));
+//            Log.d("Debugging_font,drop: ",Integer.toString(position));
             return view;
         }
 
         view.setTextSize(sizes_setting[position]);
-        Log.d("Debugging_size,drop: ",Integer.toString(sizes_setting[position]));
+//        Log.d("Debugging_size,drop: ",Integer.toString(sizes_setting[position]));
 
         return view;
     }

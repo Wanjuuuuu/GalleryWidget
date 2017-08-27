@@ -82,7 +82,7 @@ public class WidgetProvider extends AppWidgetProvider{
         SharedPreferences setting=context.getSharedPreferences(String.valueOf(appWidgetId),0);
 
         String path = setting.getString(GalleryMenuActivity.PHOTO,null);
-        String content = setting.getString(TextMenuActivity.TEXT, "");
+        String content = setting.getString(TextMenuActivity.TEXT, "12345");
         String font=setting.getString(TextMenuActivity.FONT,TextMenuActivity.FONT_DEFAULT);
         int size=setting.getInt(TextMenuActivity.SIZE,TextMenuActivity.SIZE_DEFAULT);
 
@@ -91,9 +91,11 @@ public class WidgetProvider extends AppWidgetProvider{
 
         // layout works well
 
-        updateViews.setImageViewBitmap(R.id.widget_textImage,setText(context,photo,content,font,size,TextMenuActivity.COLOR_DEFAULT));
+        updateViews.setImageViewBitmap(R.id.widget_textImage,setText(appWidgetManager,context,photo,content,font,size,TextMenuActivity.COLOR_DEFAULT));
 
         appWidgetManager.updateAppWidget(appWidgetId,updateViews); // real update here
+
+//        Log.d("Debugging_ memory usage: ");
     }
 
     public static void updateWidget(Context context,AppWidgetManager appWidgetManager,int appWidgetId){ // manager?
@@ -105,7 +107,8 @@ public class WidgetProvider extends AppWidgetProvider{
 
     /* setting font,size,color ; to use Typeface, text should be dealt as an imageView */
 
-    public Bitmap setText(Context context, Bitmap photo, String text, String font, int size, int color){
+    public Bitmap setText(AppWidgetManager appWidgetManager,Context context, Bitmap photo, String text, String font, int size, int color){
+
         Bitmap textImage=Bitmap.createBitmap(photo.getWidth(),photo.getHeight(),Bitmap.Config.ARGB_8888);
         Canvas canvas=new Canvas(textImage);
         Paint paint=new Paint();
@@ -131,13 +134,44 @@ public class WidgetProvider extends AppWidgetProvider{
         paint.setColor(color); // not defined how to set color
         paint.setTextSize(size); // its size is changing when transforming the size of widget
 
-        Rect bounds=new Rect();
-        paint.getTextBounds(text,0,text.length(),bounds);
+        Rect originalBounds=new Rect();
+        paint.getTextBounds(text,0,text.length(),originalBounds);
 
-        int x=(photo.getWidth()-bounds.width())/2;
-        int y=(photo.getHeight()-bounds.height())/2;
+        int textLength=text.length(); // max length of text based on photo width
 
-        canvas.drawText(text,x,y,paint); // max length of edittext = 40
+        Rect sampleBounds=new Rect();
+        paint.getTextBounds(text,0,textLength,sampleBounds);
+
+        while(sampleBounds.width()>photo.getWidth()){
+            textLength--;
+            paint.getTextBounds(text,0,textLength,sampleBounds);
+        }
+
+        int textWidth=originalBounds.width();
+        int textHeight=originalBounds.height();
+
+        int numOfLines=1; // number of text lines
+
+        for(int len=textLength;len<text.length();len+=len)
+
+            numOfLines++;
+
+        int x=(photo.getWidth()-sampleBounds.width())/2;
+        int y=(photo.getHeight()-textHeight*numOfLines)/2;
+
+        int startIndex=0;
+        int endIndex=textLength;
+
+        while(startIndex<=text.length()){
+            if(startIndex+textLength<=text.length())
+                endIndex=startIndex+textLength;
+            else
+                endIndex=text.length();
+            canvas.drawText(text.substring(startIndex,endIndex),x,y,paint);
+            Log.d("Debugging_ : "," text : "+text.substring(startIndex,endIndex));
+            y-=paint.descent()+paint.ascent();
+            startIndex+=textLength;
+        }
 
         return textImage;
     }
@@ -153,7 +187,7 @@ public class WidgetProvider extends AppWidgetProvider{
         options.inJustDecodeBounds=true; // not allocating yet
 
         if(path==null)
-            BitmapFactory.decodeResource(context.getResources(),R.drawable.photo);
+            BitmapFactory.decodeResource(context.getResources(),R.drawable.photo); //
         else
             BitmapFactory.decodeFile(path,options);
 
@@ -199,17 +233,17 @@ public class WidgetProvider extends AppWidgetProvider{
         int height=options.outHeight;
         int width=options.outWidth;
 
-        int reqHeight=1280; // square root 값 1000
-        int reqWidth=1280;
+        int reqHeight=1000; // square root 값 1000
+        int reqWidth=1000; //
 
         int sampleSize=1;
 
         Log.d("Debugging_ calculate_be","height: "+height+"width: "+width);
 
         if(height>reqHeight||width>reqWidth){
-            while((height/sampleSize)>=reqHeight||(width/sampleSize)>=reqWidth) {
+            while((height/sampleSize)>reqHeight||(width/sampleSize)>reqWidth) {
                 Log.d("Debugging_calculate","sampleSize: "+sampleSize);
-                sampleSize *= 2;
+                sampleSize *= 2; //
             }
         }
 
