@@ -26,13 +26,13 @@ public class TextMenuActivity extends Activity {
     public static final String ALIGN="align";
     public static final String COLOR="color";
 
-    public static final String FONT_DEFAULT="SANS_SERIF";
-    public static final String ALIGN_DEFAULT="Middle";
+    public static final int FONT_DEFAULT=0;
+    public static final int ALIGN_DEFAULT=0;
     public static final int COLOR_DEFAULT=0xFF000000; // black
 
     private int appWidgetId;
-    private String font;
-    private String align;
+    private int font;
+    private int align;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class TextMenuActivity extends Activity {
 
         /* all options for text */
 
-        final String[] fonts_user={"SANS_SERIF","SERIF","MONOSPACE"};
+        final String[] fonts_user={"San-serif 산세리프","Serif 세리프","Monospace 모노스페이스"};
         final String[] fonts_setting={"SANS_SERIF","SERIF","MONOSPACE"};
         final String[] aligns_user={"Top","Middle","Bottom"};
         final String[] aligns_setting={"Top","Middle","Bottom"};
@@ -59,7 +59,11 @@ public class TextMenuActivity extends Activity {
         /* set the options according to previous choices */
 
         SharedPreferences sp=getSharedPreferences(String.valueOf(appWidgetId),0);
+
         String preText=sp.getString(TEXT,null);
+        int preFont=sp.getInt(FONT,0);
+        int preAlign=sp.getInt(ALIGN,0);
+
         editText.setText(preText); // only editText
 
         /* setting spinner_font */
@@ -67,14 +71,15 @@ public class TextMenuActivity extends Activity {
         ArrayAdapter adapter_font=new SpinnerArrayAdater(getApplicationContext(),R.layout.spinner,fonts_user,"font"); // to customise spinner
         adapter_font.setDropDownViewResource(R.layout.spinner_dropdown); // dropdown
         spinnerFont.setAdapter(adapter_font);
+        spinnerFont.setSelection(preFont);
 
-        font=null; // not choosen
+        font=-1; // not choosen
 
         spinnerFont.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener(){
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        font=fonts_setting[position]; //
+                        font=position; //
                     }
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
@@ -90,14 +95,15 @@ public class TextMenuActivity extends Activity {
         ArrayAdapter adapter_align=new SpinnerArrayAdater(getApplicationContext(),R.layout.spinner,aligns_user,"align"); // to customise spinner
         adapter_align.setDropDownViewResource(R.layout.spinner_dropdown); // dropdown
         spinnerAlign.setAdapter(adapter_align);
+        spinnerAlign.setSelection(preAlign);
 
-        align=null; // not chosen
+        align=-1; // not chosen
 
         spinnerAlign.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener(){
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        align=aligns_setting[position]; //
+                        align=position; //
                     }
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
@@ -124,14 +130,14 @@ public class TextMenuActivity extends Activity {
                 editor.remove(TEXT); // get rid of previous saved text
                 editor.putString(TEXT,text); // put new text in shared preferences
 
-                if(font!=null) { // Chosen (if not chosen, using previous chosen one)
+                if(font!=-1) { // Chosen (if not chosen, using previous chosen one)
                     editor.remove(FONT);
-                    editor.putString(FONT, font);
+                    editor.putInt(FONT, font);
                 }
 
-                if(align!=null) { // Chosen (if not chosen, using previous chosen one)
+                if(align!=-1) { // Chosen (if not chosen, using previous chosen one)
                     editor.remove(ALIGN);
-                    editor.putString(ALIGN,align);
+                    editor.putInt(ALIGN,align);
                 }
 
                 editor.commit();

@@ -54,7 +54,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:background="@null"
-                android:hint="입력하세요"
+                android:hint="30자까지 입력 가능합니다."
                 android:maxLength="30"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

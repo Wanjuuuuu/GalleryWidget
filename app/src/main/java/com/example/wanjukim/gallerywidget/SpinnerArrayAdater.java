@@ -20,6 +20,7 @@ public class SpinnerArrayAdater extends ArrayAdapter {
     private String type; // not static
 
     final Typeface[] fonts_setting={Typeface.SANS_SERIF,Typeface.SERIF,Typeface.MONOSPACE};
+//    color~~!
 //    final int[] sizes_setting={20,30,40};
 
     /* to get customised spinner */

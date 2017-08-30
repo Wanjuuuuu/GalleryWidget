@@ -84,8 +84,8 @@ public class WidgetProvider extends AppWidgetProvider{
 
         String path = setting.getString(GalleryMenuActivity.PHOTO,null);
         String content = setting.getString(TextMenuActivity.TEXT, "");
-        String font=setting.getString(TextMenuActivity.FONT,TextMenuActivity.FONT_DEFAULT);
-        String align=setting.getString(TextMenuActivity.ALIGN,TextMenuActivity.ALIGN_DEFAULT);
+        int font=setting.getInt(TextMenuActivity.FONT,TextMenuActivity.FONT_DEFAULT);
+        int align=setting.getInt(TextMenuActivity.ALIGN,TextMenuActivity.ALIGN_DEFAULT);
 
         Bitmap photo=rescaleBitmap(context,path);
         updateViews.setImageViewBitmap(R.id.widget_imageView, photo);
@@ -105,7 +105,7 @@ public class WidgetProvider extends AppWidgetProvider{
 
     /* setting font,size,color ; to use Typeface, text should be dealt as an imageView */
 
-    public Bitmap setText(AppWidgetManager appWidgetManager,Context context, Bitmap photo, String text, String font, String align, int color){
+    public Bitmap setText(AppWidgetManager appWidgetManager,Context context, Bitmap photo, String text, int font, int align, int color){
 
         Bitmap textImage=Bitmap.createBitmap(photo.getWidth(),photo.getHeight(),Bitmap.Config.ARGB_8888);
         Canvas canvas=new Canvas(textImage);
@@ -114,13 +114,13 @@ public class WidgetProvider extends AppWidgetProvider{
         Typeface typeface_font=null;
 
         switch(font){
-            case "SANS_SERIF":
+            case 0:
                 typeface_font=Typeface.create(Typeface.SANS_SERIF,Typeface.BOLD);
                 break;
-            case "SERIF":
+            case 1:
                 typeface_font=Typeface.create(Typeface.SERIF,Typeface.BOLD);
                 break;
-            case "MONOSPACE":
+            case 2:
                 typeface_font=Typeface.create(Typeface.MONOSPACE,Typeface.BOLD);
                 break;
         }
@@ -171,19 +171,20 @@ public class WidgetProvider extends AppWidgetProvider{
         }
 
         /*
-         * Warning!!!
+         ****
+         * <Warning>
          * x,y in drawText is the first start(x) and very bottom(y) of text
-         *
+         ****
          */
 
         switch (align){
-            case "Top":
+            case 0:
                 y=sampleBounds.height()+10;
                 break;
-            case "Middle":
+            case 1:
                 y=(photo.getHeight()-(sampleBounds.height()*(numOfLines-2)+10*(numOfLines-1)))/2;
                 break;
-            case "Bottom":
+            case 2:
                 y=photo.getHeight()-(sampleBounds.height()*(numOfLines-1)+10*numOfLines);
                 break;
         }
