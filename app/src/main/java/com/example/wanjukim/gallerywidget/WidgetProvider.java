@@ -30,6 +30,7 @@ import com.example.wanjukim.gallerywidget.activities.ConfigWidgetActivity;
 import com.example.wanjukim.gallerywidget.activities.GalleryMenuActivity;
 import com.example.wanjukim.gallerywidget.activities.TextMenuActivity;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 /**
@@ -82,7 +83,7 @@ public class WidgetProvider extends AppWidgetProvider{
         SharedPreferences setting=context.getSharedPreferences(String.valueOf(appWidgetId),0);
 
         String path = setting.getString(GalleryMenuActivity.PHOTO,null);
-        String content = setting.getString(TextMenuActivity.TEXT, "12345");
+        String content = setting.getString(TextMenuActivity.TEXT, "");
         String font=setting.getString(TextMenuActivity.FONT,TextMenuActivity.FONT_DEFAULT);
         String align=setting.getString(TextMenuActivity.ALIGN,TextMenuActivity.ALIGN_DEFAULT);
 
@@ -125,60 +126,94 @@ public class WidgetProvider extends AppWidgetProvider{
         }
 
         paint.setAntiAlias(true);
-        paint.setSubpixelText(false);
+//        paint.setSubpixelText(false);
         paint.setTypeface(typeface_font);
-        paint.setStyle(Paint.Style.FILL);
+//        paint.setStyle(Paint.Style.FILL);
         paint.setColor(color); // not defined how to set color
         paint.setTextSize(40); // its size is changing when transforming the size of widget
 
-        Rect originalBounds=new Rect();
-        paint.getTextBounds(text,0,text.length(),originalBounds);
+        /* when text is not given */
 
-        int textLength=text.length(); // max length of text based on photo width
+        int x=0;
+        int y=0;
 
-        Rect sampleBounds=new Rect();
-        paint.getTextBounds(text,0,textLength,sampleBounds);
-
-        while(sampleBounds.width()>photo.getWidth()){
-            textLength--;
-            paint.getTextBounds(text,0,textLength,sampleBounds);
+        if(text.length()==0){ // default case :""
+            canvas.drawText(text,x,y,paint);
+            return textImage;
         }
 
-        int textWidth=sampleBounds.width();
-        int textHeight=sampleBounds.height();
+        /* when text is given, then using number of lines to align the text */
 
-        int numOfLines=1; // number of text lines
+        boolean condition=true;
+        int start=0;
+        int textLength=0; // max length of text based on photo width
+        int numOfLines=0;
 
-        for(int len=textLength;len<text.length();len+=len)
+        Rect sampleBounds=new Rect();
+
+        while(condition){
+            paint.getTextBounds(text,0,0,sampleBounds);
+
+            while(sampleBounds.width()<photo.getWidth()){
+                textLength++;
+                paint.getTextBounds(text,start,textLength,sampleBounds);
+                if(textLength>=text.length()) { // when textLength is longer than original text
+                    condition=false;
+                    break;
+                }
+            }
+            if(textLength!=text.length()) //
+                textLength--; // it finishes when text width is longer than photo width
+            paint.getTextBounds(text,start,textLength,sampleBounds);
+
             numOfLines++;
+            start=textLength;
+        }
 
-        int x=(photo.getWidth()-textWidth)/2;
-        int y=(photo.getHeight()-textHeight*numOfLines)/2;
+        /*
+         * Warning!!!
+         * x,y in drawText is the first start(x) and very bottom(y) of text
+         *
+         */
 
         switch (align){
             case "Top":
-                y=(photo.getHeight()-textHeight*numOfLines)/5;
+                y=sampleBounds.height()+10;
                 break;
             case "Middle":
-                y=(photo.getHeight()-textHeight*numOfLines)/2;
+                y=(photo.getHeight()-(sampleBounds.height()*(numOfLines-2)+10*(numOfLines-1)))/2;
                 break;
             case "Bottom":
-                y=(photo.getHeight()-textHeight*numOfLines)*4/5;
+                y=photo.getHeight()-(sampleBounds.height()*(numOfLines-1)+10*numOfLines);
                 break;
         }
 
-        int startIndex=0;
-        int endIndex=textLength;
+        /* Draw text image in the right location */
 
-        while(startIndex<=text.length()){
-            if(startIndex+textLength<=text.length())
-                endIndex=startIndex+textLength;
-            else
-                endIndex=text.length();
-            canvas.drawText(text.substring(startIndex,endIndex),x,y,paint);
-            Log.d("Debugging_ : "," text : "+text.substring(startIndex,endIndex));
-            y-=paint.descent()+paint.ascent();
-            startIndex+=textLength;
+        condition=true;
+        start=0;
+        textLength=0;
+
+        while(condition){
+            paint.getTextBounds(text,0,0,sampleBounds);
+
+            while(sampleBounds.width()<photo.getWidth()){
+                textLength++;
+                paint.getTextBounds(text,start,textLength,sampleBounds);
+                if(textLength>=text.length()){
+                    condition=false;
+                    break;
+                }
+            }
+            if(textLength!=text.length())
+                textLength--; // it finishes when text width is longer than photo width
+            paint.getTextBounds(text,start,textLength,sampleBounds);
+
+            x=(photo.getWidth()-sampleBounds.width())/2;
+            canvas.drawText(text.substring(start,textLength),x,y,paint);
+            y-=paint.descent()+paint.ascent()-10; // sentences have been overlapped without subtracting 10
+
+            start=textLength;
         }
 
         return textImage;
