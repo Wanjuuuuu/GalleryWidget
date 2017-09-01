@@ -3,7 +3,7 @@
     package="com.example.wanjukim.gallerywidget">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" android:protectionLevel="signature"/>
 
     <application
         android:name=".AndroidApplication"
@@ -20,8 +20,7 @@
         </activity>
 
         <receiver
-            android:name="com.example.wanjukim.gallerywidget.WidgetProvider"
-            android:label="Widget Test">
+            android:name="com.example.wanjukim.gallerywidget.WidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
                 <action android:name="com.example.wanjukim.gallerywidget.WidgetProvider.CLICK"/>

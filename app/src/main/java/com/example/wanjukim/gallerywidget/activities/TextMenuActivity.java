@@ -6,21 +6,30 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.example.wanjukim.gallerywidget.R;
 import com.example.wanjukim.gallerywidget.SpinnerArrayAdater;
+import com.example.wanjukim.gallerywidget.recyclerview.Color;
+import com.example.wanjukim.gallerywidget.recyclerview.ColorAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Wanju Kim on 2017-07-13.
  */
 
-public class TextMenuActivity extends Activity {
+public class TextMenuActivity extends Activity implements ColorAdapter.ColorClickListener {
     public static final String TEXT="text";
     public static final String FONT="font";
     public static final String ALIGN="align";
@@ -30,9 +39,13 @@ public class TextMenuActivity extends Activity {
     public static final int ALIGN_DEFAULT=0;
     public static final int COLOR_DEFAULT=0xFF000000; // black
 
+    private RecyclerView colorListView;
+    private ColorAdapter adapter;
+
     private int appWidgetId;
     private int font;
     private int align;
+    private int color; /// ??? int ????
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,9 +60,9 @@ public class TextMenuActivity extends Activity {
         /* all options for text */
 
         final String[] fonts_user={"San-serif 산세리프","Serif 세리프","Monospace 모노스페이스"};
-        final String[] fonts_setting={"SANS_SERIF","SERIF","MONOSPACE"};
+//        final String[] fonts_setting={"SANS_SERIF","SERIF","MONOSPACE"};
         final String[] aligns_user={"Top","Middle","Bottom"};
-        final String[] aligns_setting={"Top","Middle","Bottom"};
+//        final String[] aligns_setting={"Top","Middle","Bottom"};
 
         final EditText editText=(EditText)findViewById(R.id.edit_text);
         final Spinner spinnerFont=(Spinner)findViewById(R.id.spinner_font);
@@ -111,9 +124,19 @@ public class TextMenuActivity extends Activity {
                 }
         );
 
-        /* color setting using recyclerView */
+        /* color setting using recyclerView */ /////
 
-        //....
+        colorListView=(RecyclerView)findViewById(R.id.recyclerview_color);
+
+        adapter=new ColorAdapter(this);
+        adapter.setOnItemClickListener(this);
+
+        RecyclerView.LayoutManager layoutManager=new GridLayoutManager(this,6); // not calculated yet
+
+        colorListView.setAdapter(adapter); // provided by recyclerView
+        colorListView.setLayoutManager(layoutManager); //
+
+        runColorScan();
 
         /* update text as what has been chosen newly */
 
@@ -155,5 +178,38 @@ public class TextMenuActivity extends Activity {
                 finish();
             }
         });
+    }
+
+    private void runColorScan(){
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                final List<Color> colorList=new ArrayList<Color>();
+                int position=0;
+
+                for(int colorCode:Color.colors){
+                    Color newColor=new Color();
+                    newColor.setColor(colorCode);
+                    newColor.setPosition(position);
+                    colorList.add(newColor);
+                    position++;
+                    Log.d("Debugging_ :"," color :"+colorCode+" position: "+position);
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.addColorList(colorList);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        }).start();
+    }
+
+    @Override
+    public void onClick(Color color) {
+        this.color=color.getColor();
+        Log.d("Debugging_ click: ","color : "+color.getColor());
     }
 }

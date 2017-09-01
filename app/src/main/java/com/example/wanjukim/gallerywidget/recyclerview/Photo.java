@@ -8,7 +8,6 @@ public class Photo {
     private int bucketId;
     private int photoId;
     private String path;
-
     private boolean flag = false;
 
     public int getBucketId(){
