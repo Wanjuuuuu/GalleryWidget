@@ -43,6 +43,8 @@ public class TextMenuActivity extends Activity implements ColorAdapter.ColorClic
     private ColorAdapter adapter;
 
     private int appWidgetId;
+    private String text;
+    private String preText;
     private int font;
     private int align;
     private int color; /// ??? int ????
@@ -73,10 +75,11 @@ public class TextMenuActivity extends Activity implements ColorAdapter.ColorClic
 
         SharedPreferences sp=getSharedPreferences(String.valueOf(appWidgetId),0);
 
-        String preText=sp.getString(TEXT,null);
+        preText=sp.getString(TEXT,null);
         int preFont=sp.getInt(FONT,0);
         int preAlign=sp.getInt(ALIGN,0);
 
+        text=null;
         editText.setText(preText); // only editText
 
         /* setting spinner_font */
@@ -126,6 +129,8 @@ public class TextMenuActivity extends Activity implements ColorAdapter.ColorClic
 
         /* color setting using recyclerView */ /////
 
+        color=-1;
+
         colorListView=(RecyclerView)findViewById(R.id.recyclerview_color);
 
         adapter=new ColorAdapter(this);
@@ -145,13 +150,16 @@ public class TextMenuActivity extends Activity implements ColorAdapter.ColorClic
         button_save.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) { // 모든 것들을 위젯에 업데이트 시켜주어야함 // 현재는 text만 넘겨줌
-                String text=editText.getText().toString();
-
                 SharedPreferences setting=getSharedPreferences(String.valueOf(appWidgetId),0);
                 SharedPreferences.Editor editor=setting.edit();
 
-                editor.remove(TEXT); // get rid of previous saved text
-                editor.putString(TEXT,text); // put new text in shared preferences
+                text=editText.getText().toString();
+                Log.d("Debugging_ :","pretext :"+preText+" text: "+text);
+
+                if(text!=null&&text!=preText) {
+                    editor.remove(TEXT); // get rid of previous saved text
+                    editor.putString(TEXT, text); // put new text in shared preferences
+                }
 
                 if(font!=-1) { // Chosen (if not chosen, using previous chosen one)
                     editor.remove(FONT);
@@ -161,6 +169,11 @@ public class TextMenuActivity extends Activity implements ColorAdapter.ColorClic
                 if(align!=-1) { // Chosen (if not chosen, using previous chosen one)
                     editor.remove(ALIGN);
                     editor.putInt(ALIGN,align);
+                }
+
+                if(color!=-1) {
+                    editor.remove(COLOR);
+                    editor.putInt(COLOR, color);
                 }
 
                 editor.commit();
@@ -193,7 +206,7 @@ public class TextMenuActivity extends Activity implements ColorAdapter.ColorClic
                     newColor.setPosition(position);
                     colorList.add(newColor);
                     position++;
-                    Log.d("Debugging_ :"," color :"+colorCode+" position: "+position);
+//                    Log.d("Debugging_ :"," color :"+colorCode+" position: "+position);
                 }
 
                 runOnUiThread(new Runnable() {
@@ -210,6 +223,6 @@ public class TextMenuActivity extends Activity implements ColorAdapter.ColorClic
     @Override
     public void onClick(Color color) {
         this.color=color.getColor();
-        Log.d("Debugging_ click: ","color : "+color.getColor());
+//        Log.d("Debugging_ click: ","color : "+color.getColor());
     }
 }

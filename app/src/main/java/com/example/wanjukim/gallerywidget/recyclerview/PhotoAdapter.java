@@ -86,7 +86,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                 itemView.setBackgroundColor(ContextCompat.getColor(mcontext,R.color.gray));
 
             else
-                itemView.setBackgroundColor(ContextCompat.getColor(mcontext,R.color.white));
+                itemView.setBackgroundColor(ContextCompat.getColor(mcontext,R.color.backgroundDefault));
 //            photoPath.setText(photo.getPath());
         }
     }

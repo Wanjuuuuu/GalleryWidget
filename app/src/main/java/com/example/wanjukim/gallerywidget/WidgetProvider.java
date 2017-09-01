@@ -86,11 +86,13 @@ public class WidgetProvider extends AppWidgetProvider{
         String content = setting.getString(TextMenuActivity.TEXT, "");
         int font=setting.getInt(TextMenuActivity.FONT,TextMenuActivity.FONT_DEFAULT);
         int align=setting.getInt(TextMenuActivity.ALIGN,TextMenuActivity.ALIGN_DEFAULT);
+        int color=setting.getInt(TextMenuActivity.COLOR,TextMenuActivity.COLOR_DEFAULT);
 
+        Log.d("Debugging_ : ","content : "+content);
         Bitmap photo=rescaleBitmap(context,path);
         updateViews.setImageViewBitmap(R.id.widget_imageView, photo);
 
-        updateViews.setImageViewBitmap(R.id.widget_textImage,setText(appWidgetManager,context,photo,content,font,align,TextMenuActivity.COLOR_DEFAULT));
+        updateViews.setImageViewBitmap(R.id.widget_textImage,setText(appWidgetManager,context,photo,content,font,align,color));
 
         appWidgetManager.updateAppWidget(appWidgetId,updateViews); // real update here
 
@@ -212,6 +214,7 @@ public class WidgetProvider extends AppWidgetProvider{
 
             x=(photo.getWidth()-sampleBounds.width())/2;
             canvas.drawText(text.substring(start,textLength),x,y,paint);
+            Log.d("Debugging_ substring :","Substring: "+text.substring(start,textLength));
             y-=paint.descent()+paint.ascent()-10; // sentences have been overlapped without subtracting 10
 
             start=textLength;

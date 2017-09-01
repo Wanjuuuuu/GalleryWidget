@@ -57,11 +57,13 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHol
 
     class ColorViewHolder extends RecyclerView.ViewHolder {
         private ImageView square;
+        private ImageView selected;
         private Color color;
 
         ColorViewHolder(final View itemView) {
             super(itemView);
-            square = (ImageView) itemView.findViewById(R.id.color_square); // recycling layout
+            square = (ImageView) itemView.findViewById(R.id.color_square); // recyclerView
+            selected=(ImageView)itemView.findViewById(R.id.color_background); // when being selected
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,15 +81,12 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHol
 
         private void bind(Color color){
             this.color=color;
-            //set color
-            Log.d("Debugging_ before: ","color : "+color.getColor());
-            square.setColorFilter(ContextCompat.getColor(mcontext,R.color.purple), PorterDuff.Mode.SRC_ATOP);//////
-            Log.d("Debugging_ after: ","color : "+color.getColor());
+            square.setBackgroundColor(color.getColor()); // colorFilter does not work
 
             if(color.isFlag())
-                itemView.setBackgroundColor(ContextCompat.getColor(mcontext,R.color.gray));
+                selected.setBackgroundColor(ContextCompat.getColor(mcontext,R.color.gray));
             else
-                itemView.setBackgroundColor(ContextCompat.getColor(mcontext,R.color.white));
+                selected.setBackgroundColor(ContextCompat.getColor(mcontext,R.color.backgroundDefault));
         }
     }
 
