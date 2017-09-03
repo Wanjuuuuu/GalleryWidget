@@ -1,5 +1,6 @@
 # Android GalleryWidget
 ![image_main](GalleryWidget_sample6.PNG)
+![image_config](GalleryWidget_sample7.PNG)
 
 This is an application which helps users able to make their own widget. 
 
