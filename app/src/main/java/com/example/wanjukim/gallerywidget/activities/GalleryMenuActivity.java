@@ -55,7 +55,7 @@ public class GalleryMenuActivity extends AppCompatActivity implements PhotoAdapt
 
         RecyclerView.LayoutManager layoutManager=new GridLayoutManager(this,3);
 
-        photoListView.setAdapter(adapter);//
+        photoListView.setAdapter(adapter);
         photoListView.setLayoutManager(layoutManager);
 
         String[] permissions={Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -122,6 +122,5 @@ public class GalleryMenuActivity extends AppCompatActivity implements PhotoAdapt
     @Override
     public void onClickPhoto(Photo photo) {
         path=photo.getPath();
-//        Toast.makeText(this,photo.getPath(),Toast.LENGTH_SHORT).show();
     }
 }

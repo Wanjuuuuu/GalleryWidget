@@ -98,7 +98,7 @@ public class WidgetProvider extends AppWidgetProvider{
 
     }
 
-    public static void updateWidget(Context context,AppWidgetManager appWidgetManager,int appWidgetId){ // manager?
+    public static void updateWidget(Context context,AppWidgetManager appWidgetManager,int appWidgetId){
         widgetId=appWidgetId;
         Intent intent=new Intent();
         intent.setAction(CLICK_ACTION);
@@ -106,6 +106,7 @@ public class WidgetProvider extends AppWidgetProvider{
     }
 
     /* setting font,size,color ; to use Typeface, text should be dealt as an imageView */
+    /* TODO : newline character should be consider, it will be updated later */
 
     public Bitmap setText(AppWidgetManager appWidgetManager,Context context, Bitmap photo, String text, int font, int align, int color){
 
@@ -128,9 +129,7 @@ public class WidgetProvider extends AppWidgetProvider{
         }
 
         paint.setAntiAlias(true);
-//        paint.setSubpixelText(false);
         paint.setTypeface(typeface_font);
-//        paint.setStyle(Paint.Style.FILL);
         paint.setColor(color); // not defined how to set color
         paint.setTextSize(40); // its size is changing when transforming the size of widget
 
@@ -156,8 +155,11 @@ public class WidgetProvider extends AppWidgetProvider{
         while(condition){
             paint.getTextBounds(text,0,0,sampleBounds);
 
-            while(sampleBounds.width()<photo.getWidth()){
+//            Log.d("Debugging_ : ","Boolean 1: "+text.indexOf("\n"));
+
+            while(sampleBounds.width()<photo.getWidth()){ //
                 textLength++;
+//                Log.d("Debugging_ : ","Boolean 2: "+text.indexOf("\n"));
                 paint.getTextBounds(text,start,textLength,sampleBounds);
                 if(textLength>=text.length()) { // when textLength is longer than original text
                     condition=false;
@@ -166,6 +168,7 @@ public class WidgetProvider extends AppWidgetProvider{
             }
             if(textLength!=text.length()) //
                 textLength--; // it finishes when text width is longer than photo width
+
             paint.getTextBounds(text,start,textLength,sampleBounds);
 
             numOfLines++;
@@ -200,7 +203,7 @@ public class WidgetProvider extends AppWidgetProvider{
         while(condition){
             paint.getTextBounds(text,0,0,sampleBounds);
 
-            while(sampleBounds.width()<photo.getWidth()){
+            while(sampleBounds.width()<photo.getWidth()){ //
                 textLength++;
                 paint.getTextBounds(text,start,textLength,sampleBounds);
                 if(textLength>=text.length()){
@@ -210,11 +213,11 @@ public class WidgetProvider extends AppWidgetProvider{
             }
             if(textLength!=text.length())
                 textLength--; // it finishes when text width is longer than photo width
+
             paint.getTextBounds(text,start,textLength,sampleBounds);
 
             x=(photo.getWidth()-sampleBounds.width())/2;
             canvas.drawText(text.substring(start,textLength),x,y,paint);
-            Log.d("Debugging_ substring :","Substring: "+text.substring(start,textLength));
             y-=paint.descent()+paint.ascent()-10; // sentences have been overlapped without subtracting 10
 
             start=textLength;
@@ -276,7 +279,7 @@ public class WidgetProvider extends AppWidgetProvider{
         return image; //
     }
 
-    public int calculateSampleSize(BitmapFactory.Options options){
+    private int calculateSampleSize(BitmapFactory.Options options){
         int height=options.outHeight;
         int width=options.outWidth;
 
@@ -297,7 +300,7 @@ public class WidgetProvider extends AppWidgetProvider{
         return sampleSize;
     }
 
-    public int exifOrientationToDegrees(int exifOrientation){
+    private int exifOrientationToDegrees(int exifOrientation){
         if(exifOrientation==ExifInterface.ORIENTATION_ROTATE_90)
             return 90;
         else if(exifOrientation==ExifInterface.ORIENTATION_ROTATE_180)

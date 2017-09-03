@@ -47,7 +47,7 @@ public class TextMenuActivity extends Activity implements ColorAdapter.ColorClic
     private String preText;
     private int font;
     private int align;
-    private int color; /// ??? int ????
+    private int color;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,14 +62,11 @@ public class TextMenuActivity extends Activity implements ColorAdapter.ColorClic
         /* all options for text */
 
         final String[] fonts_user={"San-serif 산세리프","Serif 세리프","Monospace 모노스페이스"};
-//        final String[] fonts_setting={"SANS_SERIF","SERIF","MONOSPACE"};
         final String[] aligns_user={"Top","Middle","Bottom"};
-//        final String[] aligns_setting={"Top","Middle","Bottom"};
 
         final EditText editText=(EditText)findViewById(R.id.edit_text);
         final Spinner spinnerFont=(Spinner)findViewById(R.id.spinner_font);
         final Spinner spinnerAlign=(Spinner)findViewById(R.id.spinner_align);
-        //color option needs to be added
 
         /* set the options according to previous choices */
 
@@ -171,7 +168,7 @@ public class TextMenuActivity extends Activity implements ColorAdapter.ColorClic
                     editor.putInt(ALIGN,align);
                 }
 
-                if(color!=-1) {
+                if(color!=-1) { // Chosen (if not chosen, using previous chosen one)
                     editor.remove(COLOR);
                     editor.putInt(COLOR, color);
                 }

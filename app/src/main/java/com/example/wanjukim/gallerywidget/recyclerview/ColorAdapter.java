@@ -81,7 +81,7 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHol
 
         private void bind(Color color){
             this.color=color;
-            square.setBackgroundColor(color.getColor()); // colorFilter does not work
+            square.setBackgroundColor(color.getColor()); // colorFilter did not work
 
             if(color.isFlag())
                 selected.setBackgroundColor(ContextCompat.getColor(mcontext,R.color.gray));

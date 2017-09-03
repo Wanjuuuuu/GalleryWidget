@@ -8,7 +8,8 @@ import android.util.Log;
 
 public class Color {
     public final static int[] colors={0xFFFF0000,0xFFFFA500,0xFFFFFF00,0xFF008000,0xFF0000FF,0xFF000080
-            ,0xFF800080,0xFF000000,0xFFFFFFFF}; // 빨주노초파남보검흰
+            ,0xFF800080,0xFFFF69B4,0xFFA52A2A,0xFF000000,0xFF808080,0xFFFFFFFF};
+    // RED, ORANGE, YELLOW, GREEN, BLUE, NAVY, PURPLE, PINK, BROWN, BLACK, GRAY, WHITE
     private int color;
     private int position;
     private boolean flag=false;

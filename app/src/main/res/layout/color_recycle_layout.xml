@@ -18,4 +18,6 @@
         android:layout_gravity="center"
         android:background="@color/colorPrimary"/>
 
+    <!--FrameLayout A-B then A is background and B comes after A-->
+
 </FrameLayout>
