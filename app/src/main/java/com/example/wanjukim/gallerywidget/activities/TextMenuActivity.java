@@ -126,7 +126,7 @@ public class TextMenuActivity extends Activity implements ColorAdapter.ColorClic
 
         /* color setting using recyclerView */ /////
 
-        color=-1;
+        color=0; // white color code is -1
 
         colorListView=(RecyclerView)findViewById(R.id.recyclerview_color);
 
@@ -168,7 +168,7 @@ public class TextMenuActivity extends Activity implements ColorAdapter.ColorClic
                     editor.putInt(ALIGN,align);
                 }
 
-                if(color!=-1) { // Chosen (if not chosen, using previous chosen one)
+                if(color!=0) { // Chosen (if not chosen, using previous chosen one)
                     editor.remove(COLOR);
                     editor.putInt(COLOR, color);
                 }
@@ -220,6 +220,6 @@ public class TextMenuActivity extends Activity implements ColorAdapter.ColorClic
     @Override
     public void onClick(Color color) {
         this.color=color.getColor();
-//        Log.d("Debugging_ click: ","color : "+color.getColor());
+        Log.d("Debugging_ click: ","color : "+color.getColor());
     }
 }

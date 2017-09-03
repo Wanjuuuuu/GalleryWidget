@@ -6,4 +6,5 @@
     <color name="backgroundDefault">#EBFAFAFA</color>
     <color name="gray">#d6d6d6</color>
     <color name="purple">#800080</color>
+    <color name="white">#FFFFFF</color>
 </resources>
